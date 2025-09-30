@@ -1,0 +1,3125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración Red Interna VirtualBox - Simulador Avanzado</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/TransformControls.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.9/dat.gui.min.js"></script>
+    <link rel="stylesheet" href="CSS/styles.css">
+</head>
+<body>
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="container">
+        <nav class="sidebar" id="sidebar">
+            <h1><i class="fas fa-network-wired"></i> VirtualBox Agénticos</h1>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active" onclick="showSection('proyecto-ecosistema')">
+                        <i class="fas fa-project-diagram"></i> Proyecto Ecosistema Agéntico
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="showSection('introduccion')">
+                        <i class="fas fa-home"></i> Introducción
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="showSection('requisitos')">
+                        <i class="fas fa-list-check"></i> Requisitos
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="showSection('virtualbox')">
+                        <i class="fas fa-cogs"></i> Config. VirtualBox
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="showSection('windows')">
+                        <i class="fab fa-windows"></i> Windows 7
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="showSection('ubuntu-desktop')">
+                        <i class="fab fa-ubuntu"></i> Ubuntu Desktop
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="showSection('ubuntu-server')">
+                        <i class="fas fa-server"></i> Ubuntu Server
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="showSection('configuraciones')">
+                        <i class="fas fa-network-wired"></i> Configuraciones de Red
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="showSection('simulador')">
+                        <i class="fas fa-cube"></i> Simulador 3D
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="showSectionSafe('diagnostico', this)">
+                        <i class="fas fa-chart-line"></i> Diagnóstico
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="showSectionSafe('videos', this)">
+                        <i class="fas fa-video"></i> Videos Relacionados
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <!-- Botón para ocultar/mostrar sidebar -->
+            <button class="sidebar-toggle-btn" onclick="toggleSidebar()" title="Ocultar/Mostrar menú">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <!-- Sección Introducción -->
+            <section id="introduccion" class="section">
+                <h2><i class="fas fa-play-circle"></i> Introducción</h2>
+                <p>Bienvenido al tutorial completo para configurar una <strong>red interna en VirtualBox</strong> y conectar múltiples máquinas virtuales. Este tutorial está basado en el video de <strong>Clockwork Computer</strong> y te guiará paso a paso para crear una red funcional entre tres sistemas operativos diferentes.</p>
+                
+                <div class="vm-details-grid">
+                    <div class="vm-detail-card">
+                        <h4><i class="fab fa-windows"></i> Windows 7</h4>
+                        <p>Sistema operativo principal con interfaz gráfica familiar.</p>
+                        <span class="ip-address">192.168.1.6</span>
+                    </div>
+                    
+                    <div class="vm-detail-card">
+                        <h4><i class="fab fa-ubuntu"></i> Ubuntu Desktop</h4>
+                        <p>Entorno de escritorio Linux con interfaz gráfica amigable.</p>
+                        <span class="ip-address">192.168.1.7</span>
+                    </div>
+                    
+                    <div class="vm-detail-card">
+                        <h4><i class="fas fa-server"></i> Ubuntu Server</h4>
+                        <p>Servidor Linux sin interfaz gráfica, optimizado para servicios.</p>
+                        <span class="ip-address">192.168.1.8</span>
+                    </div>
+                </div>
+
+                <h3>¿Qué aprenderás?</h3>
+                <ul style="margin-left: 2rem; line-height: 2;">
+                    <li>Configurar adaptadores de red en VirtualBox</li>
+                    <li>Asignar direcciones IP estáticas en Windows 7</li>
+                    <li>Configurar red en Ubuntu Desktop 20.04</li>
+                    <li>Usar Netplan en Ubuntu Server 20.04</li>
+                    <li>Habilitar PING en Windows Firewall</li>
+                    <li>Probar conectividad entre máquinas</li>
+                </ul>
+
+                <div class="network-flow">
+                    <div class="flow-node">VM 1<br>Windows 7</div>
+                    <div class="flow-arrow">⟷</div>
+                    <div class="flow-node">Switch<br>Interno</div>
+                    <div class="flow-arrow">⟷</div>
+                    <div class="flow-node">VM 2<br>Ubuntu Desktop</div>
+                    <div class="flow-arrow">⟷</div>
+                    <div class="flow-node">VM 3<br>Ubuntu Server</div>
+                </div>
+            </section>
+
+            <!-- Sección Requisitos -->
+            <section id="requisitos" class="section">
+                <h2><i class="fas fa-list-check"></i> Requisitos</h2>
+                
+                <h3>Software Necesario</h3>
+                <div class="vm-card">
+                    <h4>VirtualBox</h4>
+                    <p>Versión 6.0 o superior recomendada para mejor compatibilidad con redes internas.</p>
+                </div>
+
+                <h3>Sistemas Operativos</h3>
+                <div class="vm-details-grid">
+                    <div class="vm-detail-card">
+                        <h4><i class="fab fa-windows"></i> Windows 7</h4>
+                        <p><strong>IP asignada:</strong> <span class="ip-address">192.168.1.6</span></p>
+                        <p>Sistema principal para demostrar configuración básica de red.</p>
+                    </div>
+                    
+                    <div class="vm-detail-card">
+                        <h4><i class="fab fa-ubuntu"></i> Ubuntu Desktop 20.04</h4>
+                        <p><strong>IP asignada:</strong> <span class="ip-address">192.168.1.7</span></p>
+                        <p>Configuración mediante interfaz gráfica NetworkManager.</p>
+                    </div>
+                    
+                    <div class="vm-detail-card">
+                        <h4><i class="fas fa-server"></i> Ubuntu Server 20.04</h4>
+                        <p><strong>IP asignada:</strong> <span class="ip-address">192.168.1.8</span></p>
+                        <p>Configuración avanzada usando Netplan y línea de comandos.</p>
+                    </div>
+                </div>
+
+                <h3>Recursos del Sistema</h3>
+                <ul style="margin-left: 2rem; line-height: 2;">
+                    <li><strong>RAM:</strong> Mínimo 8GB (recomendado 16GB para 3 VMs)</li>
+                    <li><strong>Espacio en disco:</strong> 60GB libres (20GB por VM)</li>
+                    <li><strong>CPU:</strong> Procesador con soporte de virtualización (VT-x/AMD-V)</li>
+                    <li><strong>Red:</strong> Adaptador de red físico funcional</li>
+                </ul>
+
+                <h3>Conocimientos Previos</h3>
+                <p>Es recomendable tener conocimientos básicos de:</p>
+                <ul style="margin-left: 2rem; line-height: 2;">
+                    <li>Conceptos básicos de redes (IP, máscara de subred)</li>
+                    <li>Uso básico de línea de comandos en Linux</li>
+                    <li>Navegación en el Panel de Control de Windows</li>
+                    <li>Funcionamiento básico de VirtualBox</li>
+                </ul>
+            </section>
+
+            <!-- Sección Config VirtualBox -->
+            <section id="virtualbox" class="section">
+                <h2><i class="fas fa-cogs"></i> Configuración VirtualBox</h2>
+
+                <h3>Paso 1: Configurar Adaptadores de Red</h3>
+                <p>Para cada máquina virtual, necesitas configurar <strong>dos adaptadores de red</strong>:</p>
+
+                <div class="vm-card">
+                    <h4>Adaptador 1 - Acceso a Internet (NAT)</h4>
+                    <div class="code-block">
+Configuración:
+- Habilitar adaptador de red: ✓
+- Conectado a: NAT
+- Nombre: (automático)
+- Avanzadas: Permitir todo el tráfico
+<button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button>
+                    </div>
+                </div>
+
+                <div class="vm-card">
+                    <h4>Adaptador 2 - Red Interna</h4>
+                    <div class="code-block">
+Configuración:
+- Habilitar adaptador de red: ✓  
+- Conectado a: Red interna
+- Nombre: internet
+- Avanzadas: Permitir todo el tráfico
+
+⚠️ IMPORTANTE: El nombre "internet" debe ser EXACTAMENTE 
+igual en las 3 máquinas virtuales.
+<button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button>
+                    </div>
+                </div>
+
+                <h3>Configuración por VM</h3>
+
+                <div class="advanced-controls">
+                    <div class="control-panel">
+                        <h4>Windows 7</h4>
+                        <div class="vm-details">
+                            <div>Adaptador 1: NAT (Internet)</div>
+                            <div>Adaptador 2: Red interna "internet"</div>
+                            <div>IP estática: 192.168.1.6</div>
+                        </div>
+                    </div>
+
+                    <div class="control-panel">
+                        <h4>Ubuntu Desktop</h4>
+                        <div class="vm-details">
+                            <div>Adaptador 1: NAT (Internet)</div>
+                            <div>Adaptador 2: Red interna "internet"</div>
+                            <div>IP estática: 192.168.1.7</div>
+                        </div>
+                    </div>
+
+                    <div class="control-panel">
+                        <h4>Ubuntu Server</h4>
+                        <div class="vm-details">
+                            <div>Adaptador 1: NAT (Internet)</div>
+                            <div>Adaptador 2: Red interna "internet"</div>
+                            <div>IP estática: 192.168.1.8</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="vm-card">
+                    <h4>⚠️ Notas Importantes</h4>
+                    <ul>
+                        <li>El <strong>nombre de la red interna</strong> debe ser idéntico en todas las VMs</li>
+                        <li>Cada VM necesita una <strong>IP única</strong> en el rango 192.168.1.x</li>
+                        <li>La máscara de subred será <strong>255.255.255.0</strong> para todas</li>
+                        <li>No configurar gateway en la red interna para evitar conflictos de rutas</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Sección Windows -->
+            <section id="windows" class="section">
+                <h2><i class="fab fa-windows"></i> Configuración Windows 7</h2>
+
+                <h3>Paso 1: Acceder al Centro de Redes</h3>
+                <div class="code-block">
+Panel de Control → Centro de redes y recursos compartidos
+<button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button>
+                </div>
+
+                <h3>Paso 2: Configurar Adaptador de Red Interna</h3>
+                <p>En el Centro de redes verás <strong>dos conexiones</strong>:</p>
+                <ul>
+                    <li><strong>Conexión de área local 1:</strong> Acceso a Internet (NAT)</li>
+                    <li><strong>Conexión de área local 2:</strong> Red interna (a configurar)</li>
+                </ul>
+
+                <div class="code-block">
+Pasos:
+1. Click derecho en "Conexión de área local 2"
+2. Seleccionar "Propiedades"
+3. Doble click en "Protocolo de Internet versión 4 (TCP/IPv4)"
+4. Seleccionar "Usar la siguiente dirección IP"
+
+Configuración:
+- Dirección IP: 192.168.1.6
+- Máscara de subred: 255.255.255.0
+- Puerta de enlace: (dejar vacío)
+- Servidor DNS preferido: 8.8.8.8
+- Servidor DNS alternativo: 8.8.4.4
+
+5. Click "Aceptar" → "Aceptar"
+<button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button>
+                </div>
+
+                <h3>Paso 3: Habilitar PING en Windows Firewall</h3>
+                <p>Por defecto, Windows 7 bloquea las solicitudes PING. Para habilitarlas:</p>
+
+                <div class="code-block">
+1. Panel de Control → Sistema y seguridad → Firewall de Windows
+2. Click en "Configuración avanzada" (lado izquierdo)
+3. En "Reglas de entrada" → Click derecho → "Nueva regla"
+4. Tipo de regla: "Personalizada" → Siguiente
+5. Programa: "Todos los programas" → Siguiente  
+6. Protocolo: "ICMPv4" → Siguiente
+7. Ámbito: "Cualquier dirección IP" → Siguiente
+8. Acción: "Permitir la conexión" → Siguiente
+9. Perfil: Marcar todas las casillas → Siguiente
+10. Nombre: "Permitir PING" → Finalizar
+<button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button>
+                </div>
+
+                <div class="vm-card">
+                    <h4>💡 Verificar Configuración</h4>
+                    <div class="code-block">
+# Abrir símbolo del sistema (cmd)
+ipconfig
+
+# Debería mostrar:
+Adaptador de LAN 2:
+   Dirección IPv4: 192.168.1.6
+   Máscara de subred: 255.255.255.0
+<button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button>
+                    </div>
+                </div>
+
+                <h3>Solución de Problemas</h3>
+                <div class="vm-card">
+                    <h4>Si no puedes hacer ping:</h4>
+                    <ul>
+                        <li>Verifica que la regla de firewall esté <strong>habilitada</strong></li>
+                        <li>Reinicia la máquina virtual después de los cambios</li>
+                        <li>Confirma que el adaptador 2 esté conectado a "Red interna"</li>
+                        <li>Verifica que el nombre de red sea exactamente "internet"</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Sección Ubuntu Desktop -->
+            <section id="ubuntu-desktop" class="section">
+                <h2><i class="fab fa-ubuntu"></i> Ubuntu Desktop 20.04</h2>
+
+                <h3>Configuración con NetworkManager</h3>
+                <p>Ubuntu Desktop utiliza una interfaz gráfica simple para configurar la red:</p>
+
+                <div class="code-block">
+Pasos:
+1. Click en el icono de red (parte superior derecha)
+2. Seleccionar "Configuración de Red" o "Network Settings"
+3. Verás dos adaptadores:
+   - Adaptador cableado 1: Internet (DHCP automático)
+   - Adaptador cableado 2: Red interna (a configurar)
+
+4. Click en el ⚙️ (configuración) del Adaptador 2
+5. Ir a la pestaña "IPv4"
+6. Cambiar método de "Automático (DHCP)" a "Manual"
+<button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button>
+                </div>
+
+                <div class="vm-card">
+                    <h4>Configuración IP Manual</h4>
+                    <div class="code-block">
+Dirección: 192.168.1.7
+Máscara de red: 255.255.255.0  
+Puerta de enlace: (dejar vacío)
+
+DNS: 8.8.8.8, 8.8.4.4
+
+Click "Aplicar" y reiniciar la máquina virtual
+<button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button>
+                    </div>
+                </div>
+
+                <h3>Verificación desde Terminal</h3>
+                <div class="code-block">
+# Verificar configuración de red
+ip addr show
+
+# Debería mostrar algo como:
+3: enp0s8: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt;
+    inet 192.168.1.7/24 brd 192.168.1.255 scope global enp0s8
+
+# Verificar conectividad
+ping 192.168.1.6    # Ping a Windows 7
+ping 192.168.1.8    # Ping a Ubuntu Server
+<button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button>
+                </div>
+
+                <h3>Comandos de Diagnóstico</h3>
+                <div class="vm-card">
+                    <h4>Comandos útiles para verificar la red:</h4>
+                    <div class="code-block">
+# Ver interfaces de red
+ip link show
+
+# Ver rutas de red  
+ip route show
+
+# Verificar DNS
+nslookup google.com
+
+# Ver estadísticas de red
+netstat -i
+
+# Verificar servicios de red
+ss -tuln
+<button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección Ubuntu Server -->
+            <section id="ubuntu-server" class="section">
+                <h2><i class="fas fa-server"></i> Ubuntu Server 20.04</h2>
+
+                <h3>Identificar Adaptadores de Red</h3>
+                <div class="code-block">
+# Listar interfaces de red
+ip a
+
+# Salida típica:
+1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; (loopback)
+2: enp0s3: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; (Internet - NAT)  
+3: enp0s8: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; (Red interna)
+<button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button>
+                </div>
+
+                <h3>Configuración con Netplan</h3>
+                <p>Ubuntu Server 20.04 utiliza <strong>Netplan</strong> para configurar la red:</p>
+
+                <div class="code-block">
+# Editar configuración de Netplan
+sudo nano /etc/netplan/00-installer-config.yaml
+<button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button>
+                </div>
+
+                <div class="vm-card">
+                    <h4>⚠️ Sintaxis YAML Crítica</h4>
+                    <p>La sintaxis en Netplan debe ser <strong>perfecta</strong>:</p>
+                    <ul>
+                        <li><strong>2 espacios</strong> por cada nivel de indentación</li>
+                        <li><strong>NO usar tabulaciones</strong>, solo espacios</li>
+                        <li>Cualquier error de sintaxis causará fallos</li>
+                    </ul>
+                </div>
+
+                <div class="code-block">
+# Archivo: /etc/netplan/00-installer-config.yaml
+
+network:
+  ethernets:
+    enp0s3:
+      dhcp4: true
+    enp0s8:
+      addresses:
+        - 192.168.1.8/24
+      # gateway4: (comentado para evitar conflictos de ruta)
+      nameservers:
+        addresses:
+          - 8.8.8.8
+          - 8.8.4.4
+  version: 2
+<button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button>
+                </div>
+
+                <h3>Aplicar Configuración</h3>
+                <div class="code-block">
+# Verificar sintaxis (no debe mostrar errores)
+sudo netplan try
+
+# Si no hay errores, aplicar cambios
+sudo netplan apply
+
+# Verificar configuración
+ip addr show enp0s8
+<button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button>
+                </div>
+
+                <h3>Verificar Rutas por Defecto</h3>
+                <div class="code-block">
+# Ver ruta por defecto
+ip route show | grep default
+
+# Salida esperada:
+default via 10.0.2.2 dev enp0s3
+
+# Esto confirma que enp0s3 (NAT) es la ruta por defecto
+# para acceso a Internet, no enp0s8 (red interna)
+<button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button>
+                </div>
+
+                <h3>Pruebas de Conectividad</h3>
+                <div class="vm-card">
+                    <h4>Comandos de prueba:</h4>
+                    <div class="code-block">
+# Ping a otras VMs en la red interna
+ping 192.168.1.6    # Windows 7
+ping 192.168.1.7    # Ubuntu Desktop
+
+# Verificar acceso a Internet (por enp0s3)
+ping google.com
+
+# Ver tabla de rutas completa
+route -n
+
+# Verificar servicios SSH (si aplicable)
+sudo systemctl status ssh
+<button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button>
+                    </div>
+                </div>
+
+                <h3>Solución de Problemas Netplan</h3>
+                <div class="vm-card">
+                    <h4>Errores comunes y soluciones:</h4>
+                    <ul>
+                        <li><strong>Error de sintaxis YAML:</strong> Verificar espacios (no tabs)</li>
+                        <li><strong>Sin conectividad:</strong> Verificar nombres de interfaces con <code>ip a</code></li>
+                        <li><strong>Conflicto de rutas:</strong> Comentar gateway4 en red interna</li>
+                        <li><strong>Cambios no aplicados:</strong> Reiniciar VM después de <code>netplan apply</code></li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Sección Configuraciones de Red -->
+            <section id="configuraciones" class="section">
+                <h2><i class="fas fa-network-wired"></i> Configuraciones de Red para VMs</h2>
+
+                <!-- Tabs para diferentes configuraciones -->
+                <div class="config-tabs">
+                    <button class="config-tab active" onclick="showConfigTab('3vms')">3 VMs</button>
+                    <button class="config-tab" onclick="showConfigTab('4vms')">4 VMs</button>
+                    <button class="config-tab" onclick="showConfigTab('5vms')">5 VMs</button>
+                    <button class="config-tab" onclick="showConfigTab('6vms')">6 VMs</button>
+                    <button class="config-tab" onclick="showConfigTab('7vms')">7 VMs</button>
+                    <button class="config-tab" onclick="showConfigTab('8vms')">8 VMs</button>
+                </div>
+
+                <!-- Contenido para 3 VMs -->
+                <div id="config-3vms" class="config-content active">
+                    <h3>🏠 Configuración Básica - 3 VMs</h3>
+                    <div class="config-scenario">
+                        <h4>📋 Escenario: Red Doméstica/Aprendizaje</h4>
+                        <div class="vm-grid">
+                            <div class="vm-card">
+                                <h5><i class="fab fa-windows"></i> Windows 7</h5>
+                                <p><strong>IP:</strong> 192.168.1.6</p>
+                                <p><strong>Función:</strong> Cliente Desktop</p>
+                                <p><strong>RAM:</strong> 2GB</p>
+                                <p><strong>CPU:</strong> 2 Cores</p>
+                            </div>
+                            <div class="vm-card">
+                                <h5><i class="fab fa-ubuntu"></i> Ubuntu Desktop</h5>
+                                <p><strong>IP:</strong> 192.168.1.7</p>
+                                <p><strong>Función:</strong> Desarrollo</p>
+                                <p><strong>RAM:</strong> 4GB</p>
+                                <p><strong>CPU:</strong> 2 Cores</p>
+                            </div>
+                            <div class="vm-card">
+                                <h5><i class="fas fa-server"></i> Ubuntu Server</h5>
+                                <p><strong>IP:</strong> 192.168.1.8</p>
+                                <p><strong>Función:</strong> Servidor Web</p>
+                                <p><strong>RAM:</strong> 2GB</p>
+                                <p><strong>CPU:</strong> 1 Core</p>
+                            </div>
+                        </div>
+
+                        <div class="config-steps">
+                            <h4>🔧 Pasos de Configuración</h4>
+                            <ol>
+                                <li>Crear red interna en VirtualBox: <code>vbox-network</code></li>
+                                <li>Configurar adaptador de red como "Red Interna" en todas las VMs</li>
+                                <li>Asignar IPs estáticas según la tabla</li>
+                                <li>Configurar máscara de subred: <code>255.255.255.0</code></li>
+                                <li>Instalar servicios básicos en Ubuntu Server (Apache, SSH)</li>
+                            </ol>
+                        </div>
+
+                        <div class="recommended-videos">
+                            <h4>📺 Videos Recomendados</h4>
+                            <div class="video-list">
+                                <div class="video-item">
+                                    <i class="fab fa-youtube"></i>
+                                    <a href="https://www.youtube.com/watch?v=A0DKVLRMkN4" target="_blank">
+                                        VirtualBox: Configuración de Red Interna Básica
+                                    </a>
+                                </div>
+                                <div class="video-item">
+                                    <i class="fab fa-youtube"></i>
+                                    <a href="https://www.youtube.com/watch?v=WMy3OzvBWc0" target="_blank">
+                                        Ubuntu Server: Configuración de Red Estática
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="diagnostics">
+                            <h4>🔍 Diagnósticos Comunes</h4>
+                            <div class="diagnostic-item">
+                                <h5>❌ Las VMs no se comunican</h5>
+                                <p><strong>Solución:</strong> Verificar que todas estén en la misma red interna</p>
+                                <div class="code-block">ping 192.168.1.7  # Desde Windows hacia Ubuntu</div>
+                            </div>
+                            <div class="diagnostic-item">
+                                <h5>⚠️ Servidor web no responde</h5>
+                                <p><strong>Solución:</strong> Verificar firewall y servicio Apache</p>
+                                <div class="code-block">sudo systemctl status apache2
+sudo ufw status</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contenido para 4 VMs -->
+                <div id="config-4vms" class="config-content">
+                    <h3>💼 Configuración Desarrollo - 4 VMs</h3>
+                    <div class="config-scenario">
+                        <h4>📋 Escenario: Entorno de Desarrollo Web</h4>
+                        <div class="vm-grid">
+                            <div class="vm-card">
+                                <h5><i class="fas fa-globe"></i> Web Server</h5>
+                                <p><strong>IP:</strong> 192.168.1.10</p>
+                                <p><strong>Función:</strong> Apache/Nginx</p>
+                                <p><strong>RAM:</strong> 3GB</p>
+                                <p><strong>CPU:</strong> 2 Cores</p>
+                            </div>
+                            <div class="vm-card">
+                                <h5><i class="fas fa-database"></i> Database Server</h5>
+                                <p><strong>IP:</strong> 192.168.1.11</p>
+                                <p><strong>Función:</strong> MySQL/PostgreSQL</p>
+                                <p><strong>RAM:</strong> 4GB</p>
+                                <p><strong>CPU:</strong> 2 Cores</p>
+                            </div>
+                            <div class="vm-card">
+                                <h5><i class="fas fa-vial"></i> Testing Server</h5>
+                                <p><strong>IP:</strong> 192.168.1.12</p>
+                                <p><strong>Función:</strong> Pruebas automáticas</p>
+                                <p><strong>RAM:</strong> 2GB</p>
+                                <p><strong>CPU:</strong> 2 Cores</p>
+                            </div>
+                            <div class="vm-card">
+                                <h5><i class="fas fa-balance-scale"></i> Load Balancer</h5>
+                                <p><strong>IP:</strong> 192.168.1.13</p>
+                                <p><strong>Función:</strong> HAProxy/Nginx</p>
+                                <p><strong>RAM:</strong> 1GB</p>
+                                <p><strong>CPU:</strong> 1 Core</p>
+                            </div>
+                        </div>
+
+                        <div class="config-steps">
+                            <h4>🔧 Pasos de Configuración</h4>
+                            <ol>
+                                <li>Crear red interna: <code>dev-network</code></li>
+                                <li>Configurar Web Server con Apache2 y PHP</li>
+                                <li>Instalar MySQL en Database Server</li>
+                                <li>Configurar Load Balancer con HAProxy</li>
+                                <li>Instalar herramientas de testing (Selenium, PHPUnit)</li>
+                                <li>Configurar comunicación entre servicios</li>
+                            </ol>
+                        </div>
+
+                        <div class="recommended-videos">
+                            <h4>📺 Videos Recomendados</h4>
+                            <div class="video-list">
+                                <div class="video-item">
+                                    <i class="fab fa-youtube"></i>
+                                    <a href="https://www.youtube.com/watch?v=Q_s7rXGdnhc" target="_blank">
+                                        HAProxy: Configuración de Load Balancer
+                                    </a>
+                                </div>
+                                <div class="video-item">
+                                    <i class="fab fa-youtube"></i>
+                                    <a href="https://www.youtube.com/watch?v=pTFZFxd4hOI" target="_blank">
+                                        Docker vs VMs: Entornos de Desarrollo
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="diagnostics">
+                            <h4>🔍 Diagnósticos Comunes</h4>
+                            <div class="diagnostic-item">
+                                <h5>❌ Load Balancer no distribuye carga</h5>
+                                <p><strong>Solución:</strong> Verificar configuración HAProxy</p>
+                                <div class="code-block">sudo haproxy -c -f /etc/haproxy/haproxy.cfg</div>
+                            </div>
+                            <div class="diagnostic-item">
+                                <h5>⚠️ Base de datos no conecta</h5>
+                                <p><strong>Solución:</strong> Verificar bind-address en MySQL</p>
+                                <div class="code-block">sudo netstat -tulpn | grep :3306</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contenido para 5 VMs -->
+                <div id="config-5vms" class="config-content">
+                    <h3>🏢 Configuración Empresarial - 5 VMs</h3>
+                    <div class="config-scenario">
+                        <h4>📋 Escenario: Pequeña Empresa con Servicios Web</h4>
+                        <div class="vm-grid">
+                            <div class="vm-card">
+                                <h5><i class="fas fa-globe"></i> Web Server</h5>
+                                <p><strong>IP:</strong> 192.168.1.15</p>
+                                <p><strong>Función:</strong> Apache/Nginx Frontend</p>
+                                <p><strong>RAM:</strong> 3GB</p>
+                                <p><strong>CPU:</strong> 2 Cores</p>
+                            </div>
+                            <div class="vm-card">
+                                <h5><i class="fas fa-database"></i> Database Server</h5>
+                                <p><strong>IP:</strong> 192.168.1.16</p>
+                                <p><strong>Función:</strong> MySQL/PostgreSQL</p>
+                                <p><strong>RAM:</strong> 4GB</p>
+                                <p><strong>CPU:</strong> 2 Cores</p>
+                            </div>
+                            <div class="vm-card">
+                                <h5><i class="fas fa-file-archive"></i> File Server</h5>
+                                <p><strong>IP:</strong> 192.168.1.17</p>
+                                <p><strong>Función:</strong> Samba/FTP Server</p>
+                                <p><strong>RAM:</strong> 2GB</p>
+                                <p><strong>CPU:</strong> 1 Core</p>
+                            </div>
+                            <div class="vm-card">
+                                <h5><i class="fas fa-desktop"></i> Admin Desktop</h5>
+                                <p><strong>IP:</strong> 192.168.1.18</p>
+                                <p><strong>Función:</strong> Administración</p>
+                                <p><strong>RAM:</strong> 3GB</p>
+                                <p><strong>CPU:</strong> 2 Cores</p>
+                            </div>
+                            <div class="vm-card">
+                                <h5><i class="fas fa-shield-alt"></i> Firewall/Gateway</h5>
+                                <p><strong>IP:</strong> 192.168.1.1</p>
+                                <p><strong>Función:</strong> PfSense/iptables</p>
+                                <p><strong>RAM:</strong> 1GB</p>
+                                <p><strong>CPU:</strong> 1 Core</p>
+                            </div>
+                        </div>
+
+                        <div class="config-steps">
+                            <h4>🔧 Pasos de Configuración</h4>
+                            <ol>
+                                <li>Crear red interna: <code>empresa-network</code></li>
+                                <li>Configurar Firewall como gateway principal</li>
+                                <li>Instalar y configurar Web Server (Apache + PHP)</li>
+                                <li>Configurar Database Server con MySQL</li>
+                                <li>Implementar File Server con Samba para compartir archivos</li>
+                                <li>Configurar Desktop de administración con herramientas remotas</li>
+                                <li>Establecer reglas de firewall y políticas de seguridad</li>
+                            </ol>
+                        </div>
+
+                        <div class="recommended-videos">
+                            <h4>📺 Videos Recomendados</h4>
+                            <div class="video-list">
+                                <div class="video-item">
+                                    <i class="fab fa-youtube"></i>
+                                    <a href="https://www.youtube.com/watch?v=x3sQmLjKsYg" target="_blank">
+                                        Samba Server: Configuración de archivos compartidos
+                                    </a>
+                                </div>
+                                <div class="video-item">
+                                    <i class="fab fa-youtube"></i>
+                                    <a href="https://www.youtube.com/watch?v=9_3UhmPOdSs" target="_blank">
+                                        pfSense: Firewall y router para redes empresariales
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="diagnostics">
+                            <h4>🔍 Diagnósticos Comunes</h4>
+                            <div class="diagnostic-item">
+                                <h5>❌ No se puede acceder al servidor de archivos</h5>
+                                <p><strong>Solución:</strong> Verificar configuración Samba y permisos</p>
+                                <div class="code-block">sudo systemctl status smbd
+sudo testparm</div>
+                            </div>
+                            <div class="diagnostic-item">
+                                <h5>⚠️ Firewall bloquea conexiones</h5>
+                                <p><strong>Solución:</strong> Verificar reglas de iptables</p>
+                                <div class="code-block">sudo iptables -L -n
+sudo ufw status verbose</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contenido para 6 VMs -->
+                <div id="config-6vms" class="config-content">
+                    <h3>🌐 Configuración Infraestructura - 6 VMs</h3>
+                    <div class="config-scenario">
+                        <h4>📋 Escenario: Infraestructura Web con Alta Disponibilidad</h4>
+                        <div class="vm-grid">
+                            <div class="vm-card">
+                                <h5><i class="fas fa-balance-scale"></i> Load Balancer</h5>
+                                <p><strong>IP:</strong> 192.168.1.10</p>
+                                <p><strong>Función:</strong> HAProxy/Nginx LB</p>
+                                <p><strong>RAM:</strong> 2GB</p>
+                                <p><strong>CPU:</strong> 2 Cores</p>
+                            </div>
+                            <div class="vm-card">
+                                <h5><i class="fas fa-globe"></i> Web Server 1</h5>
+                                <p><strong>IP:</strong> 192.168.1.11</p>
+                                <p><strong>Función:</strong> Apache Frontend</p>
+                                <p><strong>RAM:</strong> 3GB</p>
+                                <p><strong>CPU:</strong> 2 Cores</p>
+                            </div>
+                            <div class="vm-card">
+                                <h5><i class="fas fa-globe"></i> Web Server 2</h5>
+                                <p><strong>IP:</strong> 192.168.1.12</p>
+                                <p><strong>Función:</strong> Apache Frontend</p>
+                                <p><strong>RAM:</strong> 3GB</p>
+                                <p><strong>CPU:</strong> 2 Cores</p>
+                            </div>
+                            <div class="vm-card">
+                                <h5><i class="fas fa-database"></i> Database Master</h5>
+                                <p><strong>IP:</strong> 192.168.1.20</p>
+                                <p><strong>Función:</strong> MySQL Master</p>
+                                <p><strong>RAM:</strong> 4GB</p>
+                                <p><strong>CPU:</strong> 3 Cores</p>
+                            </div>
+                            <div class="vm-card">
+                                <h5><i class="fas fa-database"></i> Database Slave</h5>
+                                <p><strong>IP:</strong> 192.168.1.21</p>
+                                <p><strong>Función:</strong> MySQL Slave</p>
+                                <p><strong>RAM:</strong> 3GB</p>
+                                <p><strong>CPU:</strong> 2 Cores</p>
+                            </div>
+                            <div class="vm-card">
+                                <h5><i class="fas fa-chart-line"></i> Monitoring</h5>
+                                <p><strong>IP:</strong> 192.168.1.30</p>
+                                <p><strong>Función:</strong> Nagios/Zabbix</p>
+                                <p><strong>RAM:</strong> 2GB</p>
+                                <p><strong>CPU:</strong> 2 Cores</p>
+                            </div>
+                        </div>
+
+                        <div class="config-steps">
+                            <h4>🔧 Pasos de Configuración</h4>
+                            <ol>
+                                <li>Crear red interna: <code>ha-network</code></li>
+                                <li>Configurar Load Balancer con algoritmo round-robin</li>
+                                <li>Instalar servidores web idénticos (Apache + PHP)</li>
+                                <li>Configurar replicación Master-Slave MySQL</li>
+                                <li>Implementar sistema de monitoreo Nagios</li>
+                                <li>Configurar health checks automáticos</li>
+                                <li>Establecer alertas por email/SMS</li>
+                            </ol>
+                        </div>
+
+                        <div class="recommended-videos">
+                            <h4>📺 Videos Recomendados</h4>
+                            <div class="video-list">
+                                <div class="video-item">
+                                    <i class="fab fa-youtube"></i>
+                                    <a href="https://www.youtube.com/watch?v=7VhMNhSj9Kg" target="_blank">
+                                        MySQL Master-Slave: Configuración paso a paso
+                                    </a>
+                                </div>
+                                <div class="video-item">
+                                    <i class="fab fa-youtube"></i>
+                                    <a href="https://www.youtube.com/watch?v=Q_s7rXGdnhc" target="_blank">
+                                        HAProxy: Load Balancing y alta disponibilidad
+                                    </a>
+                                </div>
+                                <div class="video-item">
+                                    <i class="fab fa-youtube"></i>
+                                    <a href="https://www.youtube.com/watch?v=KZOhsdfmRXo" target="_blank">
+                                        Nagios: Monitoreo de infraestructura IT
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="diagnostics">
+                            <h4>🔍 Diagnósticos Comunes</h4>
+                            <div class="diagnostic-item">
+                                <h5>❌ Replicación MySQL no sincroniza</h5>
+                                <p><strong>Solución:</strong> Verificar estado de réplica</p>
+                                <div class="code-block">SHOW SLAVE STATUS\G
+SHOW PROCESSLIST;</div>
+                            </div>
+                            <div class="diagnostic-item">
+                                <h5>⚠️ Load Balancer marca servidores como down</h5>
+                                <p><strong>Solución:</strong> Verificar health checks</p>
+                                <div class="code-block">curl -I http://192.168.1.11/health
+tail -f /var/log/haproxy.log</div>
+                            </div>
+                            <div class="diagnostic-item">
+                                <h5>🔍 Monitoreo no recibe métricas</h5>
+                                <p><strong>Solución:</strong> Verificar agentes NRPE</p>
+                                <div class="code-block">systemctl status nrpe
+/usr/lib/nagios/plugins/check_load</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contenido para 7 VMs -->
+                <div id="config-7vms" class="config-content">
+                    <h3>🔒 Configuración Seguridad - 7 VMs</h3>
+                    <div class="config-scenario">
+                        <h4>📋 Escenario: Laboratorio de Ciberseguridad</h4>
+                        <div class="vm-grid">
+                            <div class="vm-card">
+                                <h5><i class="fas fa-shield-alt"></i> Firewall</h5>
+                                <p><strong>IP:</strong> 192.168.1.1</p>
+                                <p><strong>Función:</strong> pfSense Gateway</p>
+                                <p><strong>RAM:</strong> 2GB</p>
+                                <p><strong>CPU:</strong> 2 Cores</p>
+                            </div>
+                            <div class="vm-card">
+                                <h5><i class="fas fa-search"></i> SIEM Server</h5>
+                                <p><strong>IP:</strong> 192.168.1.10</p>
+                                <p><strong>Función:</strong> ELK Stack/Splunk</p>
+                                <p><strong>RAM:</strong> 6GB</p>
+                                <p><strong>CPU:</strong> 3 Cores</p>
+                            </div>
+                            <div class="vm-card">
+                                <h5><i class="fas fa-bug"></i> Vulnerability Scanner</h5>
+                                <p><strong>IP:</strong> 192.168.1.11</p>
+                                <p><strong>Función:</strong> OpenVAS/Nessus</p>
+                                <p><strong>RAM:</strong> 4GB</p>
+                                <p><strong>CPU:</strong> 2 Cores</p>
+                            </div>
+                            <div class="vm-card">
+                                <h5><i class="fas fa-user-secret"></i> Pentesting Box</h5>
+                                <p><strong>IP:</strong> 192.168.1.12</p>
+                                <p><strong>Función:</strong> Kali Linux</p>
+                                <p><strong>RAM:</strong> 4GB</p>
+                                <p><strong>CPU:</strong> 2 Cores</p>
+                            </div>
+                            <div class="vm-card">
+                                <h5><i class="fas fa-globe"></i> Target Web App</h5>
+                                <p><strong>IP:</strong> 192.168.1.20</p>
+                                <p><strong>Función:</strong> DVWA/Metasploitable</p>
+                                <p><strong>RAM:</strong> 2GB</p>
+                                <p><strong>CPU:</strong> 1 Core</p>
+                            </div>
+                            <div class="vm-card">
+                                <h5><i class="fas fa-desktop"></i> Victim Machine</h5>
+                                <p><strong>IP:</strong> 192.168.1.21</p>
+                                <p><strong>Función:</strong> Windows vulnerable</p>
+                                <p><strong>RAM:</strong> 3GB</p>
+                                <p><strong>CPU:</strong> 2 Cores</p>
+                            </div>
+                            <div class="vm-card">
+                                <h5><i class="fas fa-chart-line"></i> SOC Workstation</h5>
+                                <p><strong>IP:</strong> 192.168.1.30</p>
+                                <p><strong>Función:</strong> Análisis forense</p>
+                                <p><strong>RAM:</strong> 4GB</p>
+                                <p><strong>CPU:</strong> 3 Cores</p>
+                            </div>
+                        </div>
+
+                        <div class="config-steps">
+                            <h4>🔧 Pasos de Configuración</h4>
+                            <ol>
+                                <li>Crear red interna: <code>security-lab</code></li>
+                                <li>Configurar pfSense con reglas de segmentación</li>
+                                <li>Instalar ELK Stack para análisis de logs</li>
+                                <li>Configurar OpenVAS para escaneo de vulnerabilidades</li>
+                                <li>Preparar Kali Linux con herramientas de pentesting</li>
+                                <li>Instalar aplicaciones vulnerables (DVWA, Metasploitable)</li>
+                                <li>Configurar Windows vulnerable para práticas</li>
+                                <li>Establecer SOC con herramientas forenses</li>
+                            </ol>
+                        </div>
+
+                        <div class="recommended-videos">
+                            <h4>📺 Videos Recomendados</h4>
+                            <div class="video-list">
+                                <div class="video-item">
+                                    <i class="fab fa-youtube"></i>
+                                    <a href="https://www.youtube.com/watch?v=4I4IjCZsUHE" target="_blank">
+                                        Kali Linux: Configuración para pentesting
+                                    </a>
+                                </div>
+                                <div class="video-item">
+                                    <i class="fab fa-youtube"></i>
+                                    <a href="https://www.youtube.com/watch?v=rBUKQHFcZRk" target="_blank">
+                                        ELK Stack: SIEM para análisis de seguridad
+                                    </a>
+                                </div>
+                                <div class="video-item">
+                                    <i class="fab fa-youtube"></i>
+                                    <a href="https://www.youtube.com/watch?v=VhDWw6Q7pI8" target="_blank">
+                                        OpenVAS: Scanner de vulnerabilidades
+                                    </a>
+                                </div>
+                                <div class="video-item">
+                                    <i class="fab fa-youtube"></i>
+                                    <a href="https://www.youtube.com/watch?v=Xfzl_HagzSg" target="_blank">
+                                        Metasploitable: Laboratorio de hacking ético
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="diagnostics">
+                            <h4>🔍 Diagnósticos Comunes</h4>
+                            <div class="diagnostic-item">
+                                <h5>❌ ELK Stack no recibe logs</h5>
+                                <p><strong>Solución:</strong> Verificar configuración Logstash</p>
+                                <div class="code-block">systemctl status logstash
+tail -f /var/log/logstash/logstash-plain.log</div>
+                            </div>
+                            <div class="diagnostic-item">
+                                <h5>⚠️ OpenVAS no escanea targets</h5>
+                                <p><strong>Solución:</strong> Verificar conectividad y configuración</p>
+                                <div class="code-block">systemctl status openvas-scanner
+ping 192.168.1.20</div>
+                            </div>
+                            <div class="diagnostic-item">
+                                <h5>🔍 Pentesting tools no funcionan</h5>
+                                <p><strong>Solución:</strong> Actualizar herramientas Kali</p>
+                                <div class="code-block">apt update && apt upgrade -y
+msfupdate</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contenido para 8 VMs -->
+                <div id="config-8vms" class="config-content">
+                    <h3>🚀 Configuración Producción - 8 VMs</h3>
+                    <div class="config-scenario">
+                        <h4>📋 Escenario: Infraestructura de Producción Completa</h4>
+                        <div class="vm-grid">
+                            <div class="vm-card">
+                                <h5><i class="fas fa-globe"></i> Web Server 1</h5>
+                                <p><strong>IP:</strong> 192.168.1.20</p>
+                                <p><strong>Función:</strong> Frontend principal</p>
+                                <p><strong>RAM:</strong> 4GB</p>
+                                <p><strong>CPU:</strong> 3 Cores</p>
+                            </div>
+                            <div class="vm-card">
+                                <h5><i class="fas fa-globe"></i> Web Server 2</h5>
+                                <p><strong>IP:</strong> 192.168.1.21</p>
+                                <p><strong>Función:</strong> Frontend backup</p>
+                                <p><strong>RAM:</strong> 4GB</p>
+                                <p><strong>CPU:</strong> 3 Cores</p>
+                            </div>
+                            <div class="vm-card">
+                                <h5><i class="fas fa-database"></i> DB Master</h5>
+                                <p><strong>IP:</strong> 192.168.1.30</p>
+                                <p><strong>Función:</strong> Base datos principal</p>
+                                <p><strong>RAM:</strong> 6GB</p>
+                                <p><strong>CPU:</strong> 3 Cores</p>
+                            </div>
+                            <div class="vm-card">
+                                <h5><i class="fas fa-database"></i> DB Slave</h5>
+                                <p><strong>IP:</strong> 192.168.1.31</p>
+                                <p><strong>Función:</strong> Réplica lectura</p>
+                                <p><strong>RAM:</strong> 4GB</p>
+                                <p><strong>CPU:</strong> 2 Cores</p>
+                            </div>
+                            <div class="vm-card">
+                                <h5><i class="fas fa-balance-scale"></i> Load Balancer</h5>
+                                <p><strong>IP:</strong> 192.168.1.10</p>
+                                <p><strong>Función:</strong> Nginx/HAProxy</p>
+                                <p><strong>RAM:</strong> 2GB</p>
+                                <p><strong>CPU:</strong> 2 Cores</p>
+                            </div>
+                            <div class="vm-card">
+                                <h5><i class="fas fa-chart-line"></i> Monitoring</h5>
+                                <p><strong>IP:</strong> 192.168.1.40</p>
+                                <p><strong>Función:</strong> Prometheus/Grafana</p>
+                                <p><strong>RAM:</strong> 3GB</p>
+                                <p><strong>CPU:</strong> 2 Cores</p>
+                            </div>
+                            <div class="vm-card">
+                                <h5><i class="fas fa-save"></i> Backup Server</h5>
+                                <p><strong>IP:</strong> 192.168.1.50</p>
+                                <p><strong>Función:</strong> Respaldos automáticos</p>
+                                <p><strong>RAM:</strong> 2GB</p>
+                                <p><strong>CPU:</strong> 1 Core</p>
+                            </div>
+                            <div class="vm-card">
+                                <h5><i class="fas fa-rocket"></i> CI/CD Server</h5>
+                                <p><strong>IP:</strong> 192.168.1.60</p>
+                                <p><strong>Función:</strong> Jenkins/GitLab</p>
+                                <p><strong>RAM:</strong> 4GB</p>
+                                <p><strong>CPU:</strong> 3 Cores</p>
+                            </div>
+                        </div>
+
+                        <div class="config-steps">
+                            <h4>🔧 Pasos de Configuración Avanzada</h4>
+                            <ol>
+                                <li>Configurar red interna: <code>production-network</code></li>
+                                <li>Implementar Load Balancer con SSL/TLS</li>
+                                <li>Configurar replicación Master-Slave en MySQL</li>
+                                <li>Instalar stack de monitoreo (Prometheus + Grafana)</li>
+                                <li>Configurar pipeline CI/CD automatizado</li>
+                                <li>Implementar sistema de backups automáticos</li>
+                                <li>Configurar alertas y notificaciones</li>
+                                <li>Implementar logging centralizado</li>
+                            </ol>
+                        </div>
+
+                        <div class="recommended-videos">
+                            <h4>📺 Videos Recomendados</h4>
+                            <div class="video-list">
+                                <div class="video-item">
+                                    <i class="fab fa-youtube"></i>
+                                    <a href="https://www.youtube.com/watch?v=R8_veQiYBjI" target="_blank">
+                                        DevOps: Pipeline completo CI/CD
+                                    </a>
+                                </div>
+                                <div class="video-item">
+                                    <i class="fab fa-youtube"></i>
+                                    <a href="https://www.youtube.com/watch?v=eO7_4VJfrAg" target="_blank">
+                                        MySQL Master-Slave: Configuración de réplicas
+                                    </a>
+                                </div>
+                                <div class="video-item">
+                                    <i class="fab fa-youtube"></i>
+                                    <a href="https://www.youtube.com/watch?v=9TJx7QTrTyo" target="_blank">
+                                        Prometheus + Grafana: Monitoreo profesional
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="diagnostics">
+                            <h4>🔍 Diagnósticos Avanzados</h4>
+                            <div class="diagnostic-item">
+                                <h5>❌ Replicación MySQL fallando</h5>
+                                <p><strong>Solución:</strong> Verificar configuración de réplica</p>
+                                <div class="code-block">SHOW SLAVE STATUS\G;
+SHOW MASTER STATUS;</div>
+                            </div>
+                            <div class="diagnostic-item">
+                                <h5>⚠️ Load Balancer con alta latencia</h5>
+                                <p><strong>Solución:</strong> Verificar health checks y algoritmos</p>
+                                <div class="code-block">curl -I http://192.168.1.10/health
+tail -f /var/log/nginx/access.log</div>
+                            </div>
+                            <div class="diagnostic-item">
+                                <h5>🔍 Monitoreo sin métricas</h5>
+                                <p><strong>Solución:</strong> Verificar exporters de Prometheus</p>
+                                <div class="code-block">systemctl status node_exporter
+curl http://192.168.1.40:9090/targets</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección Proyecto Ecosistema Agéntico -->
+            <section id="proyecto-ecosistema" class="section active">
+                <h2><i class="fas fa-project-diagram"></i> Arquitectura Escalable de VMs con Agentes Especializados para Aplicaciones Médicas</h2>
+
+                <div class="project-header">
+                    <div class="project-intro">
+                        <h3>Proyecto de Investigación Multidisciplinario</h3>
+                        <p class="project-subtitle">Ecosistema Agéntico para el Sector Salud</p>
+                        <p class="project-date"><i class="fas fa-calendar"></i> 30 de septiembre de 2025</p>
+                    </div>
+                </div>
+
+                <!-- Resumen Ejecutivo -->
+                <div class="executive-summary">
+                    <h3><i class="fas fa-file-alt"></i> Resumen Ejecutivo</h3>
+                    <p>Este proyecto presenta una <strong>innovación arquitectónica fundamental</strong> en el campo de la computación médica, introduciendo el concepto de <strong>"sólido geométrico"</strong> para la coordinación de sistemas multi-agente. La esencia del proyecto es el desarrollo de una solución de software arquitectónica de vanguardia para el sector de la salud, enfocada en la escalabilidad, la especialización de agentes y la robustez.</p>
+                    <p>La arquitectura está concebida para integrar de manera sinérgica agentes de inteligencia artificial y software automatizado, soportando aplicaciones médicas críticas desde el diagnóstico hasta la investigación de frontera.</p>
+                </div>
+
+                <!-- Objetivos -->
+                <div class="objectives-section">
+                    <h3><i class="fas fa-bullseye"></i> Objetivos del Proyecto</h3>
+
+                    <div class="objective-card main-objective">
+                        <h4><i class="fas fa-star"></i> Objetivo General</h4>
+                        <p>Diseñar, implementar y validar una arquitectura escalable y robusta, fundamentada en el innovador concepto de <strong>sólido geométrico</strong>, que integre agentes de inteligencia artificial y software automatizado para soportar aplicaciones médicas de alta complejidad.</p>
+                        <div class="objective-highlight">
+                            <i class="fas fa-lightbulb"></i>
+                            <p>Crear un ecosistema donde la coordinación multidimensional entre agentes especializados permita la emergencia de una <strong>inteligencia colectiva superior</strong> a la suma de capacidades individuales.</p>
+                        </div>
+                    </div>
+
+                    <div class="specific-objectives">
+                        <h4><i class="fas fa-list-ol"></i> Objetivos Específicos</h4>
+                        <div class="objectives-grid">
+                            <div class="objective-item">
+                                <div class="objective-number">1</div>
+                                <div class="objective-content">
+                                    <h5>Concepto Arquitectónico</h5>
+                                    <p>Desarrollo del paradigma de <strong>sólido geométrico</strong> para coordinación multi-agente.</p>
+                                </div>
+                            </div>
+                            <div class="objective-item">
+                                <div class="objective-number">2</div>
+                                <div class="objective-content">
+                                    <h5>Análisis Técnico-Económico</h5>
+                                    <p>Realización de análisis exhaustivo para implementación de <strong>2 a 8 máquinas virtuales</strong>.</p>
+                                </div>
+                            </div>
+                            <div class="objective-item">
+                                <div class="objective-number">3</div>
+                                <div class="objective-content">
+                                    <h5>Metodología de Validación</h5>
+                                    <p>Establecimiento de metodología rigurosa: <strong>HIPAA, FDA (SaMD), ISO 13485</strong>.</p>
+                                </div>
+                            </div>
+                            <div class="objective-item">
+                                <div class="objective-number">4</div>
+                                <div class="objective-content">
+                                    <h5>Framework Escalable</h5>
+                                    <p>Creación de marco de trabajo flexible para aplicaciones médicas especializadas.</p>
+                                </div>
+                            </div>
+                            <div class="objective-item">
+                                <div class="objective-number">5</div>
+                                <div class="objective-content">
+                                    <h5>Evaluación Comparativa</h5>
+                                    <p>Análisis sistemático frente a <strong>NVIDIA Clara</strong> y <strong>Microsoft Azure Healthcare</strong>.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Concepto Técnico: Sólido Geométrico -->
+                <div class="technical-concept">
+                    <h3><i class="fas fa-cube"></i> El Concepto de Sólido Geométrico</h3>
+                    <div class="concept-explanation">
+                        <div class="concept-visual">
+                            <div class="geometric-representation">
+                                <i class="fas fa-project-diagram fa-5x"></i>
+                            </div>
+                            <p class="concept-caption">Representación conceptual del sólido geométrico multi-agente</p>
+                        </div>
+                        <div class="concept-text">
+                            <p>La arquitectura de <strong>sólido geométrico</strong> representa un paradigma arquitectónico con base matemática sólida en la <strong>teoría de grafos</strong> y la <strong>topología algebraica</strong>.</p>
+                            <ul>
+                                <li><strong>Vértices:</strong> Cada máquina virtual (Vi) representa un vértice en un espacio n-dimensional</li>
+                                <li><strong>Aristas:</strong> Interconectividad definida mediante matriz de adyacencia Aij</li>
+                                <li><strong>Caras:</strong> Simbolizan la colaboración operativa entre múltiples agentes</li>
+                            </ul>
+
+                            <div class="formula-box">
+                                <h5>Capacidad Computacional Emergente</h5>
+                                <p class="formula">C<sub>total</sub> = Σ C<sub>i</sub> + α · Σ A<sub>ij</sub> · S(V<sub>i</sub>, V<sub>j</sub>)</p>
+                                <div class="formula-legend">
+                                    <p><strong>Donde:</strong></p>
+                                    <ul>
+                                        <li>C<sub>i</sub>: Capacidad individual de la VM i</li>
+                                        <li>α: Factor de sinergia (0.15 - 0.3 para sistemas médicos)</li>
+                                        <li>S(V<sub>i</sub>, V<sub>j</sub>): Función de sinergia entre agentes</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Configuraciones Geométricas -->
+                <div class="geometric-configs">
+                    <h3><i class="fas fa-shapes"></i> Configuraciones Geométricas Escalables</h3>
+                    <p class="section-intro">El proyecto contempla configuraciones desde 2 hasta 8 máquinas virtuales, cada una con su propia geometría y características de rendimiento:</p>
+
+                    <div class="config-table-container">
+                        <table class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>VMs</th>
+                                    <th>Geometría</th>
+                                    <th>Conexiones</th>
+                                    <th>Disponibilidad</th>
+                                    <th>Latencia</th>
+                                    <th>Throughput</th>
+                                    <th>Almacenamiento</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>2</strong></td>
+                                    <td>Lineal</td>
+                                    <td>1</td>
+                                    <td>99.5%</td>
+                                    <td>&lt;2s</td>
+                                    <td>20K tps</td>
+                                    <td>10-50 TB</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>3</strong></td>
+                                    <td>Triangular</td>
+                                    <td>3</td>
+                                    <td>99.9%</td>
+                                    <td>&lt;1.5s</td>
+                                    <td>50K tps</td>
+                                    <td>50-200 TB</td>
+                                </tr>
+                                <tr class="highlighted-row">
+                                    <td><strong>4</strong></td>
+                                    <td>Tetraédrica</td>
+                                    <td>6</td>
+                                    <td>99.95%</td>
+                                    <td>&lt;1s</td>
+                                    <td>80K tps</td>
+                                    <td>200-500 TB</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>5</strong></td>
+                                    <td>Piramidal</td>
+                                    <td>8</td>
+                                    <td>99.97%</td>
+                                    <td>&lt;0.8s</td>
+                                    <td>90K tps</td>
+                                    <td>0.5-2 PB</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>6</strong></td>
+                                    <td>Octaédrica</td>
+                                    <td>12</td>
+                                    <td>99.99%</td>
+                                    <td>&lt;0.5s</td>
+                                    <td>95K tps</td>
+                                    <td>2-5 PB</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>7</strong></td>
+                                    <td>Hexagonal</td>
+                                    <td>12</td>
+                                    <td>99.995%</td>
+                                    <td>&lt;0.3s</td>
+                                    <td>98K tps</td>
+                                    <td>5-10 PB</td>
+                                </tr>
+                                <tr class="highlighted-row">
+                                    <td><strong>8</strong></td>
+                                    <td>Cúbica</td>
+                                    <td>12</td>
+                                    <td>99.999%</td>
+                                    <td>&lt;0.1s</td>
+                                    <td>100K+ tps</td>
+                                    <td>10+ PB</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="geometry-explanation">
+                        <h4><i class="fas fa-info-circle"></i> Explicación de las Geometrías</h4>
+                        <div class="geometry-cards">
+                            <div class="geometry-card">
+                                <h5>Lineal (2 VMs)</h5>
+                                <p>Configuración básica punto a punto, ideal para ambientes de desarrollo o pruebas.</p>
+                            </div>
+                            <div class="geometry-card">
+                                <h5>Triangular (3 VMs)</h5>
+                                <p>Configuración con redundancia básica, cada VM conectada a las otras dos.</p>
+                            </div>
+                            <div class="geometry-card">
+                                <h5>Tetraédrica (4 VMs)</h5>
+                                <p>Estructura piramidal 3D, alta disponibilidad para aplicaciones médicas.</p>
+                            </div>
+                            <div class="geometry-card">
+                                <h5>Cúbica (8 VMs)</h5>
+                                <p>Configuración empresarial completa con máxima disponibilidad y rendimiento.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stack Tecnológico -->
+                <div class="tech-stack">
+                    <h3><i class="fas fa-server"></i> Stack Tecnológico Recomendado</h3>
+                    <div class="tech-grid">
+                        <div class="tech-card">
+                            <i class="fas fa-layer-group"></i>
+                            <h4>Virtualización</h4>
+                            <ul>
+                                <li><strong>VMware vSphere 8 Update 3</strong> - Hasta 64 hosts por clúster y 8,000 VMs</li>
+                                <li><strong>Proxmox VE 8</strong> - Alternativa KVM/LXC rentable, hasta 32 nodos</li>
+                            </ul>
+                        </div>
+                        <div class="tech-card">
+                            <i class="fab fa-linux"></i>
+                            <h4>Sistemas Operativos</h4>
+                            <ul>
+                                <li><strong>Ubuntu Pro 22.04/24.04 LTS</strong> - Ecosistema IA/ML con 10 años de soporte</li>
+                                <li><strong>RHEL 9</strong> - Servidores de bases de datos con cumplimiento ACID</li>
+                                <li><strong>MediLinux y BioLinux</strong> - Procesamiento DICOM y bioinformática</li>
+                            </ul>
+                        </div>
+                        <div class="tech-card">
+                            <i class="fas fa-shield-alt"></i>
+                            <h4>Cumplimiento Regulatorio</h4>
+                            <ul>
+                                <li><strong>HIPAA</strong> - Protección de datos médicos</li>
+                                <li><strong>FDA (SaMD)</strong> - Software como dispositivo médico</li>
+                                <li><strong>ISO 13485</strong> - Gestión de calidad médica</li>
+                            </ul>
+                        </div>
+                        <div class="tech-card">
+                            <i class="fas fa-brain"></i>
+                            <h4>Agentes Especializados</h4>
+                            <ul>
+                                <li><strong>Diagnóstico por Imágenes</strong> - Radiología, Patología</li>
+                                <li><strong>Análisis Clínicos</strong> - Procesamiento de datos</li>
+                                <li><strong>Investigación Genómica</strong> - Bioinformática</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resultados de Validación -->
+                <div class="validation-results">
+                    <h3><i class="fas fa-check-double"></i> Resultados de Validación</h3>
+                    <div class="results-grid">
+                        <div class="result-card">
+                            <div class="result-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h4>85%</h4>
+                            <p>Eficiencia de escalabilidad al pasar de 2 a 8 VMs</p>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-icon">
+                                <i class="fas fa-tachometer-alt"></i>
+                            </div>
+                            <h4>100,000 IOPS</h4>
+                            <p>Capacidades de procesamiento para aplicaciones críticas</p>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <h4>&lt;1ms</h4>
+                            <p>Latencias sub-milisegundo para operaciones críticas</p>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-icon">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                            <h4>300-400%</h4>
+                            <p>ROI en periodo de 3 a 5 años</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Inversión y ROI -->
+                <div class="investment-section">
+                    <h3><i class="fas fa-dollar-sign"></i> Análisis de Inversión Inicial</h3>
+
+                    <div class="investment-grid">
+                        <div class="investment-card">
+                            <h4>Configuración 2-4 VMs</h4>
+                            <p class="config-description">Ideal para ambientes de desarrollo y aplicaciones médicas específicas</p>
+                            <div class="investment-details">
+                                <div class="cost-item">
+                                    <span class="cost-label">Hardware:</span>
+                                    <span class="cost-value">$15,000 - $25,000</span>
+                                </div>
+                                <div class="cost-item">
+                                    <span class="cost-label">Almacenamiento:</span>
+                                    <span class="cost-value">$20,000 - $40,000</span>
+                                </div>
+                                <div class="cost-item">
+                                    <span class="cost-label">Red:</span>
+                                    <span class="cost-value">$5,000 - $10,000</span>
+                                </div>
+                                <div class="cost-total">
+                                    <span class="cost-label">Total:</span>
+                                    <span class="cost-value">$40,000 - $75,000</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="investment-card">
+                            <h4>Configuración 5-8 VMs</h4>
+                            <p class="config-description">Configuración empresarial para implementaciones de producción</p>
+                            <div class="investment-details">
+                                <div class="cost-item">
+                                    <span class="cost-label">Hardware:</span>
+                                    <span class="cost-value">$30,000 - $50,000</span>
+                                </div>
+                                <div class="cost-item">
+                                    <span class="cost-label">Almacenamiento:</span>
+                                    <span class="cost-value">$40,000 - $80,000</span>
+                                </div>
+                                <div class="cost-item">
+                                    <span class="cost-label">Red:</span>
+                                    <span class="cost-value">$10,000 - $20,000</span>
+                                </div>
+                                <div class="cost-total">
+                                    <span class="cost-label">Total:</span>
+                                    <span class="cost-value">$80,000 - $150,000</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="roi-highlight">
+                        <i class="fas fa-chart-line"></i>
+                        <div class="roi-content">
+                            <h4>Retorno de Inversión Proyectado</h4>
+                            <p><strong>ROI del 300-400%</strong> en periodo de <strong>3 a 5 años</strong></p>
+                            <ul>
+                                <li>Eficiencia de escalabilidad del 85% al expandir infraestructura</li>
+                                <li>Capacidades de procesamiento hasta 100,000 IOPS</li>
+                                <li>Latencias sub-milisegundo para aplicaciones críticas</li>
+                                <li>Reducción de costos operativos comparado con soluciones cloud</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Identificación del Problema -->
+                <div class="problem-section">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Identificación del Problema o Necesidad</h3>
+                    <div class="problem-content">
+                        <p class="problem-description">El propósito fundamental de este proyecto es abordar la <strong>brecha existente</strong> entre la creciente complejidad y el volumen exponencial de las aplicaciones médicas, que demandan un procesamiento simultáneo de datos de diversas fuentes, y la infraestructura de sistemas distribuidos insuficiente para manejar esta carga con los rigurosos requisitos de rendimiento y cumplimiento normativo.</p>
+
+                        <h4><i class="fas fa-list"></i> Causas del Problema</h4>
+                        <div class="causes-grid">
+                            <div class="cause-card">
+                                <i class="fas fa-robot"></i>
+                                <h5>Crecimiento Exponencial de la IA Médica</h5>
+                                <p>Más de <strong>950 dispositivos médicos</strong> habilitados por IA autorizados por la FDA a agosto de 2024, representando un aumento del <strong>78%</strong> desde 2023.</p>
+                            </div>
+                            <div class="cause-card">
+                                <i class="fas fa-puzzle-piece"></i>
+                                <h5>Complejidad de Aplicaciones Médicas</h5>
+                                <p>Requisitos multidimensionales: procesamiento de imágenes diagnósticas, análisis clínicos, investigación genómica y cumplimiento regulatorio simultáneo.</p>
+                            </div>
+                            <div class="cause-card">
+                                <i class="fas fa-flask"></i>
+                                <h5>Aumento en Investigación Clínica con IA</h5>
+                                <p>Crecimiento de <strong>3 presentaciones en 2018</strong> a <strong>170 en 2023</strong> en ensayos clínicos con IA.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mercado y Contexto -->
+                <div class="market-context">
+                    <h3><i class="fas fa-chart-line"></i> Antecedentes y Situación Actual del Mercado</h3>
+
+                    <div class="market-evolution">
+                        <h4>Evolución del Mercado</h4>
+                        <p>El mercado de sistemas multi-agente está proyectado para alcanzar <strong>$47.1 mil millones</strong> para 2030, con un CAGR del <strong>44.8%</strong>. Sin embargo, la investigación no ha documentado intentos previos de soluciones que utilicen el concepto de <strong>sólido geométrico</strong> para coordinación de agentes.</p>
+                    </div>
+
+                    <div class="market-stats">
+                        <div class="stat-card">
+                            <i class="fas fa-arrow-up"></i>
+                            <div class="stat-content">
+                                <h4>$47.1 mil millones</h4>
+                                <p>Mercado proyectado de sistemas multi-agente para 2030</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-percent"></i>
+                            <div class="stat-content">
+                                <h4>44.8% CAGR</h4>
+                                <p>Tasa de crecimiento anual compuesta del mercado</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-robot"></i>
+                            <div class="stat-content">
+                                <h4>950+ dispositivos</h4>
+                                <p>Dispositivos médicos habilitados por IA autorizados por FDA (2024)</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-flask"></i>
+                            <div class="stat-content">
+                                <h4>170 ensayos clínicos</h4>
+                                <p>Con IA presentados en 2023 (vs. 3 en 2018)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="situation-comparison">
+                        <div class="situation-card current">
+                            <h4><i class="fas fa-times-circle"></i> Situación Actual</h4>
+                            <ul>
+                                <li>Demanda creciente con soluciones comerciales limitadas</li>
+                                <li>Vendor lock-in que limita flexibilidad</li>
+                                <li>Menor especialización para aplicaciones médicas específicas</li>
+                                <li>Costos elevados de plataformas cloud a largo plazo</li>
+                            </ul>
+                        </div>
+                        <div class="situation-card desired">
+                            <h4><i class="fas fa-check-circle"></i> Situación Deseada</h4>
+                            <ul>
+                                <li>Ecosistema auto-organizado con inteligencia colectiva superior</li>
+                                <li>Escalabilidad predecible y control total de infraestructura</li>
+                                <li>Capacidad para colaboración global en investigación médica</li>
+                                <li>ROI optimizado con inversión inicial controlada</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fases del Proyecto -->
+                <div class="project-phases">
+                    <h3><i class="fas fa-tasks"></i> Alcances del Proyecto por Fases</h3>
+                    <p class="phases-intro">El proyecto se desarrollará en <strong>3 fases principales</strong> durante un periodo de <strong>6 meses</strong>:</p>
+
+                    <div class="phases-timeline">
+                        <div class="phase-card">
+                            <div class="phase-header phase-1">
+                                <i class="fas fa-flag"></i>
+                                <div>
+                                    <h4>Fase I: Fundación</h4>
+                                    <span class="phase-duration">Meses 1-2</span>
+                                </div>
+                            </div>
+                            <div class="phase-content">
+                                <ul>
+                                    <li>Adquisición de hardware y configuración del centro de datos</li>
+                                    <li>Instalación de hipervisores (VMware vSphere 8 o Proxmox VE 8)</li>
+                                    <li>Configuración de redes y micro-segmentación</li>
+                                    <li>Implementación de plantillas de SO base</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="phase-card">
+                            <div class="phase-header phase-2">
+                                <i class="fas fa-cogs"></i>
+                                <div>
+                                    <h4>Fase II: Servicios Core</h4>
+                                    <span class="phase-duration">Meses 2-4</span>
+                                </div>
+                            </div>
+                            <div class="phase-content">
+                                <ul>
+                                    <li>Despliegue de servidores de bases de datos y aplicaciones</li>
+                                    <li>Configuración de alta disponibilidad y balanceadores de carga</li>
+                                    <li>Implementación de sistemas de backup y recuperación</li>
+                                    <li>Integración de sistemas de colas de mensajes</li>
+                                    <li>Despliegue de primeros agentes especializados</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="phase-card">
+                            <div class="phase-header phase-3">
+                                <i class="fas fa-rocket"></i>
+                                <div>
+                                    <h4>Fase III: Características Avanzadas</h4>
+                                    <span class="phase-duration">Meses 4-6</span>
+                                </div>
+                            </div>
+                            <div class="phase-content">
+                                <ul>
+                                    <li>Despliegue de plataforma de orquestación de contenedores</li>
+                                    <li>Configuración de service mesh con control de políticas</li>
+                                    <li>Optimización de rendimiento y pruebas de validación</li>
+                                    <li>Preparación de documentación para cumplimiento regulatorio</li>
+                                    <li><strong>Despliegue completo del concepto "sólido geométrico"</strong></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Beneficiarios -->
+                <div class="beneficiaries-section">
+                    <h3><i class="fas fa-users"></i> Beneficiarios del Proyecto</h3>
+                    <p class="beneficiaries-intro">El proyecto tiene un alcance multidisciplinario con aplicaciones en diversos sectores del ámbito de la salud:</p>
+
+                    <div class="beneficiaries-grid">
+                        <div class="beneficiary-card">
+                            <div class="beneficiary-icon">
+                                <i class="fas fa-hospital"></i>
+                            </div>
+                            <h4>Medicina Humana</h4>
+                            <p class="beneficiary-type">Diagnóstico por Imágenes</p>
+                            <div class="beneficiary-details">
+                                <p><strong>Población Objetivo:</strong> Radiólogos, Patólogos, Clínicos</p>
+                                <p><strong>Población Beneficiada:</strong> Pacientes, Redes de hospitales</p>
+                                <p><strong>Duración:</strong> 6 meses</p>
+                                <p><strong>Lugar de Ejecución:</strong> Centro de datos/Red hospitalaria</p>
+                            </div>
+                        </div>
+
+                        <div class="beneficiary-card">
+                            <div class="beneficiary-icon">
+                                <i class="fas fa-paw"></i>
+                            </div>
+                            <h4>Medicina Veterinaria</h4>
+                            <p class="beneficiary-type">Ganadería de Precisión</p>
+                            <div class="beneficiary-details">
+                                <p><strong>Población Objetivo:</strong> Veterinarios, Ganaderos</p>
+                                <p><strong>Población Beneficiada:</strong> Productores de alimentos, Comunidades agrícolas</p>
+                                <p><strong>Duración:</strong> 6 meses</p>
+                                <p><strong>Lugar de Ejecución:</strong> Centro de datos/Granjas</p>
+                            </div>
+                        </div>
+
+                        <div class="beneficiary-card">
+                            <div class="beneficiary-icon">
+                                <i class="fas fa-microscope"></i>
+                            </div>
+                            <h4>Investigación de Bacteriófagos</h4>
+                            <p class="beneficiary-type">Terapia Personalizada</p>
+                            <div class="beneficiary-details">
+                                <p><strong>Población Objetivo:</strong> Investigadores, Biólogos computacionales</p>
+                                <p><strong>Población Beneficiada:</strong> Comunidad de investigación global, Pacientes</p>
+                                <p><strong>Duración:</strong> 6 meses</p>
+                                <p><strong>Lugar de Ejecución:</strong> Centro de investigación biomédica</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Equipo de Investigación -->
+                <div class="research-team">
+                    <h3><i class="fas fa-users-cog"></i> Equipo Multidisciplinario de Investigación</h3>
+                    <p class="team-intro">El proyecto cuenta con un <strong>equipo de 10 investigadores especializados</strong> en diversos campos que aportan experiencia complementaria:</p>
+
+                    <div class="team-grid">
+                        <div class="team-member">
+                            <i class="fas fa-user-md"></i>
+                            <p>Arquitectura de Software Médico</p>
+                        </div>
+                        <div class="team-member">
+                            <i class="fas fa-brain"></i>
+                            <p>Inteligencia Artificial y Machine Learning</p>
+                        </div>
+                        <div class="team-member">
+                            <i class="fas fa-network-wired"></i>
+                            <p>Sistemas Distribuidos</p>
+                        </div>
+                        <div class="team-member">
+                            <i class="fas fa-shield-alt"></i>
+                            <p>Seguridad y Cumplimiento Regulatorio</p>
+                        </div>
+                        <div class="team-member">
+                            <i class="fas fa-dna"></i>
+                            <p>Bioinformática Computacional</p>
+                        </div>
+                        <div class="team-member">
+                            <i class="fas fa-x-ray"></i>
+                            <p>Imagenología Médica Digital</p>
+                        </div>
+                        <div class="team-member">
+                            <i class="fas fa-database"></i>
+                            <p>Bases de Datos Médicas</p>
+                        </div>
+                        <div class="team-member">
+                            <i class="fas fa-cloud"></i>
+                            <p>Cloud Computing e Infraestructura</p>
+                        </div>
+                        <div class="team-member">
+                            <i class="fas fa-chart-bar"></i>
+                            <p>Análisis de Datos Clínicos</p>
+                        </div>
+                        <div class="team-member">
+                            <i class="fas fa-stethoscope"></i>
+                            <p>Medicina Clínica</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Conclusiones -->
+                <div class="conclusions-section">
+                    <h3><i class="fas fa-check-circle"></i> Conclusiones</h3>
+                    <div class="conclusion-content">
+                        <p>Este proyecto representa una <strong>innovación arquitectónica fundamental</strong> en el campo de la computación médica, introduciendo el concepto de <strong>"sólido geométrico"</strong> para la coordinación de sistemas multi-agente.</p>
+
+                        <div class="key-points">
+                            <div class="key-point">
+                                <i class="fas fa-check"></i>
+                                <p>Solución <strong>escalable y especializada</strong> que responde a las necesidades críticas del sector salud en la era de la IA</p>
+                            </div>
+                            <div class="key-point">
+                                <i class="fas fa-check"></i>
+                                <p><strong>Económicamente viable</strong> con ROI del 300-400% en 3-5 años comparado con soluciones cloud a largo plazo</p>
+                            </div>
+                            <div class="key-point">
+                                <i class="fas fa-check"></i>
+                                <p>Aborda las <strong>limitaciones técnicas actuales</strong> de las plataformas comerciales (vendor lock-in, costos, especialización)</p>
+                            </div>
+                            <div class="key-point">
+                                <i class="fas fa-check"></i>
+                                <p>Establece bases para futuras innovaciones en <strong>medicina de precisión</strong>, diagnóstico automatizado e investigación biomédica avanzada</p>
+                            </div>
+                        </div>
+
+                        <div class="future-vision">
+                            <i class="fas fa-eye"></i>
+                            <h4>Visión a Futuro</h4>
+                            <p>La arquitectura propuesta no solo aborda las limitaciones técnicas actuales, sino que también crea un <strong>ecosistema auto-organizado</strong> con inteligencia colectiva superior, escalabilidad predecible y capacidad para colaboración global en investigación médica, posicionándose como una plataforma de vanguardia para la siguiente generación de aplicaciones médicas.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CTA Final -->
+                <div class="cta-section">
+                    <h3><i class="fas fa-rocket"></i> Próximos Pasos</h3>
+                    <p>¿Interesado en conocer más sobre el proyecto o formar parte del equipo de investigación?</p>
+                    <div class="cta-buttons">
+                        <button class="cta-btn primary" onclick="alert('Contacto: investigacion@ecosistema-agentico.org\n\nEquipo de 10 investigadores multidisciplinarios')">
+                            <i class="fas fa-envelope"></i> Contactar al Equipo
+                        </button>
+                        <button class="cta-btn secondary" onclick="showSection('simulador')">
+                            <i class="fas fa-cube"></i> Ver Simulador 3D de Arquitectura
+                        </button>
+                        <a href="PresentacionProyectoVMsV2.pdf" target="_blank" class="cta-btn secondary" style="text-decoration: none; display: inline-block;">
+                            <i class="fas fa-file-pdf"></i> Documento PDF Completo
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección Simulador 3D -->
+            <section id="simulador" class="section">
+                <h2><i class="fas fa-cube"></i> Simulador 3D Avanzado</h2>
+                
+                <div class="simulator-info">
+                    <h4><i class="fas fa-info-circle"></i> Instrucciones del Simulador</h4>
+                    <p>El simulador 3D te permite visualizar y manipular la red de máquinas virtuales:</p>
+                    <ul>
+                        <li><strong>Seleccionar VMs:</strong> Haz clic en cualquier máquina virtual para ver su configuración</li>
+                        <li><strong>Mover VMs:</strong> Arrastra las máquinas virtuales en el espacio 3D para reorganizar la red</li>
+                        <li><strong>Rotar vista:</strong> Usa el botón derecho del mouse para rotar la cámara</li>
+                        <li><strong>Hacer zoom:</strong> Usa la rueda del mouse para acercar o alejar la vista</li>
+                    </ul>
+                </div>
+                
+                <div class="simulator-launch-container">
+                    <div class="simulator-preview">
+                        <div class="preview-content">
+                            <i class="fas fa-cube simulator-icon"></i>
+                            <h3>Simulador 3D de Red VirtualBox</h3>
+                            <p>Visualiza las máquinas virtuales y sus conexiones de red en un entorno 3D interactivo</p>
+                            <button class="launch-simulator-btn" onclick="openSimulatorModal()">
+                                <i class="fas fa-play"></i> Abrir Simulador 3D
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal del Simulador 3D -->
+                <div id="simulatorModal" class="simulator-modal">
+                    <div class="simulator-modal-content">
+                        <div class="simulator-modal-header">
+                            <h3><i class="fas fa-cube"></i> Simulador 3D - Red VirtualBox</h3>
+                            <button class="modal-close-btn" onclick="closeSimulatorModal()">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div id="simulator3d" class="simulator-modal-body">
+                            <!-- El simulador profesional se carga aquí con sus propios controles -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contenido original del simulador (se mantiene para referencia) -->
+                <div class="simulator-container" style="display: none;">
+
+                    <!-- Panel de controles avanzados -->
+                    <div class="simulator-controls">
+                        <div class="control-group">
+                            <label>Configuración de Red</label>
+                            <select class="control-input" id="networkMode">
+                                <option value="internal">Red Interna</option>
+                                <option value="nat">NAT Network</option>
+                                <option value="bridged">Adaptador Puente</option>
+                            </select>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label>Subred IP</label>
+                            <input type="text" class="control-input" id="subnetInput" value="192.168.1.0/24">
+                        </div>
+                        
+                        <div class="control-group">
+                            <label>Velocidad Animación</label>
+                            <input type="range" class="control-input" id="animationSpeed" min="0.5" max="3" step="0.1" value="1">
+                        </div>
+                        
+                        <div class="control-group">
+                            <button class="control-btn" onclick="startPingSimulation()">
+                                <i class="fas fa-paper-plane"></i> Simular PING
+                            </button>
+                            <button class="control-btn" onclick="resetNetwork()">
+                                <i class="fas fa-refresh"></i> Reset
+                            </button>
+                        </div>
+                        
+                        <div class="control-group">
+                            <button class="control-btn" onclick="toggleWireframe()">
+                                <i class="fas fa-eye"></i> Wireframe
+                            </button>
+                            <button class="control-btn" onclick="autoRotate()">
+                                <i class="fas fa-sync"></i> Auto-Rotar
+                            </button>
+                        </div>
+                        
+                        <div class="control-group">
+                            <button class="control-btn" onclick="toggleTestMode()" id="testModeBtn">
+                                <i class="fas fa-vials"></i> Modo Test
+                            </button>
+                            <button class="control-btn" onclick="restartSimulator()">
+                                <i class="fas fa-redo"></i> Reiniciar
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Panel de estadísticas de red -->
+                    <div class="network-stats">
+                        <h4 style="margin-bottom: 10px; color: #10b981;">
+                            <i class="fas fa-chart-line"></i> Estado del Simulador
+                        </h4>
+                        <div class="stat-item">
+                            <span>Modo:</span>
+                            <span class="stat-value" id="simulatorMode">Test</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>Objetos 3D:</span>
+                            <span class="stat-value" id="objectCount">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>FPS:</span>
+                            <span class="stat-value" id="fpsCounter">60</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>VMs Activas:</span>
+                            <span class="stat-value" id="activeVMs">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>Latencia:</span>
+                            <span class="stat-value" id="avgLatency">0ms</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>Paquetes:</span>
+                            <span class="stat-value" id="packetsSent">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>Estado:</span>
+                            <span class="stat-value" id="networkStatus">Inicializando</span>
+                        </div>
+                    </div>
+
+                    <!-- Panel de diagnóstico interactivo -->
+                    <div class="diagnostic-panel">
+                        <h4 style="margin-bottom: 10px; color: #10b981;">Herramientas de Diagnóstico</h4>
+                        <div class="diagnostic-row">
+                            <input type="text" class="diagnostic-input" id="pingTarget" placeholder="IP destino (ej: 192.168.1.6)" value="192.168.1.6">
+                            <button class="control-btn" onclick="executePing()">
+                                <i class="fas fa-paper-plane"></i> PING
+                            </button>
+                            <button class="control-btn" onclick="executeTraceroute()">
+                                <i class="fas fa-route"></i> Traceroute
+                            </button>
+                            <button class="control-btn" onclick="executeNetstat()">
+                                <i class="fas fa-list"></i> Netstat
+                            </button>
+                        </div>
+                        <div class="diagnostic-output" id="diagnosticOutput">
+Simulador de Red VirtualBox v3.0 - Listo
+> Digite comandos de diagnóstico o use los botones anteriores
+                        </div>
+                    </div>
+
+                    <!-- Tooltip de ayuda -->
+                    <div class="simulator-tooltip" id="simulator-tooltip">
+                        Haz clic en una VM para ver su configuración
+                    </div>
+                </div>
+
+                <!-- Panel de configuración de VM -->
+                <div class="vm-config-overlay" id="vmConfigOverlay" onclick="closeVMConfig()"></div>
+                <div class="vm-config-panel" id="vmConfigPanel">
+                    <div class="vm-config-header">
+                        <h3 class="vm-config-title" id="vmConfigTitle">Configuración de VM</h3>
+                        <button class="vm-config-close" onclick="closeVMConfig()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="vm-config-content" id="vmConfigContent">
+                        <!-- El contenido se llenará dinámicamente -->
+                    </div>
+                    <div class="vm-config-actions">
+                        <button class="vm-config-btn vm-config-btn-secondary" onclick="closeVMConfig()">
+                            Cerrar
+                        </button>
+                        <button class="vm-config-btn vm-config-btn-primary" onclick="saveVMConfig()">
+                            Guardar Cambios
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Controles avanzados -->
+                <div class="advanced-controls">
+                    <div class="control-panel">
+                        <h4>Configuración VMs</h4>
+                        <div class="slider-container">
+                            <label>Windows 7 - CPU Usage</label>
+                            <input type="range" class="slider" min="0" max="100" value="15" id="windowsCPU">
+                            <span id="windowsCPUValue">15%</span>
+                        </div>
+                        <div class="slider-container">
+                            <label>Ubuntu Desktop - RAM Usage</label>
+                            <input type="range" class="slider" min="0" max="100" value="32" id="ubuntuRAM">
+                            <span id="ubuntuRAMValue">32%</span>
+                        </div>
+                        <div class="slider-container">
+                            <label>Ubuntu Server - Network Load</label>
+                            <input type="range" class="slider" min="0" max="100" value="8" id="serverNetwork">
+                            <span id="serverNetworkValue">8%</span>
+                        </div>
+                    </div>
+
+                    <div class="control-panel">
+                        <h4>Protocolos de Red</h4>
+                        <div>
+                            <label><input type="checkbox" checked> ICMP (PING)</label>
+                        </div>
+                        <div>
+                            <label><input type="checkbox" checked> TCP</label>
+                        </div>
+                        <div>
+                            <label><input type="checkbox"> UDP</label>
+                        </div>
+                        <div>
+                            <label><input type="checkbox"> ARP</label>
+                        </div>
+                        <div>
+                            <label><input type="checkbox"> DHCP</label>
+                        </div>
+                    </div>
+
+                    <div class="control-panel">
+                        <h4>Simulación de Fallos</h4>
+                        <button class="control-btn" onclick="simulateNetworkFailure()">
+                            <i class="fas fa-exclamation-triangle"></i> Fallo de Red
+                        </button>
+                        <button class="control-btn" onclick="simulateHighLatency()">
+                            <i class="fas fa-clock"></i> Alta Latencia
+                        </button>
+                        <button class="control-btn" onclick="simulatePacketLoss()">
+                            <i class="fas fa-times-circle"></i> Pérdida Paquetes
+                        </button>
+                        <button class="control-btn" onclick="restoreNetwork()">
+                            <i class="fas fa-check-circle"></i> Restaurar Red
+                        </button>
+                    </div>
+
+                    <div class="control-panel">
+                        <h4>Topología de Red</h4>
+                        <select class="control-input" onchange="changeTopology(this.value)">
+                            <option value="star">Estrella (Switch Central)</option>
+                            <option value="bus">Bus Lineal</option>
+                            <option value="ring">Anillo</option>
+                            <option value="mesh">Malla Compleja</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Terminal de logs en tiempo real -->
+                <div class="log-terminal" id="networkLog">
+                    <div class="log-entry">[INFO] Simulador 3D inicializado correctamente</div>
+                    <div class="log-entry">[NETWORK] Red interna 'internet' creada - Subnet: 192.168.1.0/24</div>
+                    <div class="log-entry">[VM] Windows 7 (192.168.1.6) - Estado: ACTIVO</div>
+                    <div class="log-entry">[VM] Ubuntu Desktop (192.168.1.7) - Estado: ACTIVO</div>
+                    <div class="log-entry">[VM] Ubuntu Server (192.168.1.8) - Estado: ACTIVO</div>
+                    <div class="log-entry">[READY] Sistema listo para simulaciones de red</div>
+                </div>
+
+                <div class="simulator-actions">
+                    <button class="action-btn" onclick="addNewVM()">
+                        <i class="fas fa-plus-circle"></i> Añadir Nueva VM
+                    </button>
+                    <button class="action-btn" onclick="captureNetworkTraffic()">
+                        <i class="fas fa-capture"></i> Capturar Tráfico
+                    </button>
+                    <button class="action-btn" onclick="exportNetworkConfig()">
+                        <i class="fas fa-download"></i> Exportar Config
+                    </button>
+                    <button class="action-btn" onclick="resetSimulator()">
+                        <i class="fas fa-redo"></i> Reiniciar Simulador
+                    </button>
+                </div>
+                
+                <!-- Panel de configuración de VM -->
+                <div class="vm-config-overlay" id="vmConfigOverlay"></div>
+                <div class="vm-config-panel" id="vmConfigPanel">
+                    <div class="vm-config-header">
+                        <h3 class="vm-config-title" id="vmConfigTitle">Configuración de VM</h3>
+                        <button class="vm-config-close" onclick="closeVMConfig()">&times;</button>
+                    </div>
+                    <div class="vm-config-content" id="vmConfigContent">
+                        <!-- El contenido se genera dinámicamente -->
+                    </div>
+                    <div class="vm-config-actions">
+                        <button class="vm-config-btn vm-config-btn-primary" onclick="saveVMConfig()">
+                            <i class="fas fa-save"></i> Guardar
+                        </button>
+                        <button class="vm-config-btn vm-config-btn-secondary" onclick="closeVMConfig()">
+                            <i class="fas fa-times"></i> Cancelar
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Tooltip del simulador -->
+                <div class="simulator-tooltip" id="simulator-tooltip">
+                    Haz clic en una VM para ver su configuración • Arrastra para mover • Rueda del mouse para zoom
+                </div>
+                </div>
+                <!-- Fin del contenedor del simulador original -->
+            </section>
+
+            <!-- Sección Diagnóstico -->
+            <section id="diagnostico" class="section">
+                <h2><i class="fas fa-chart-line"></i> Herramientas de Diagnóstico</h2>
+                
+                <h3>Comandos Esenciales de Red</h3>
+                
+                <div class="vm-card">
+                    <h4><i class="fas fa-paper-plane"></i> Comando PING</h4>
+                    <div class="code-block">
+# Windows
+ping 192.168.1.7
+ping 192.168.1.8
+
+# Linux (Ubuntu)
+ping -c 4 192.168.1.6
+ping -c 4 192.168.1.8
+
+# Parámetros útiles:
+ping -t 192.168.1.6      # Ping continuo (Windows)
+ping -i 2 192.168.1.7    # Ping cada 2 segundos (Linux)
+ping -s 1024 192.168.1.8 # Ping con paquetes grandes (Linux)
+<button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button>
+                    </div>
+                </div>
+
+                <div class="vm-card">
+                    <h4><i class="fas fa-network-wired"></i> Verificar Interfaces de Red</h4>
+                    <div class="code-block">
+# Linux (Ubuntu)
+ip addr show              # Ver todas las interfaces
+ip addr show enp0s8       # Ver interfaz específica
+ip link show              # Ver estado de enlaces
+
+# Windows
+ipconfig                  # Configuración básica
+ipconfig /all            # Configuración detallada
+netsh interface show interface  # Estado de interfaces
+<button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button>
+                    </div>
+                </div>
+
+                <div class="vm-card">
+                    <h4><i class="fas fa-route"></i> Tabla de Rutas</h4>
+                    <div class="code-block">
+# Linux
+ip route show            # Ver rutas actuales
+route -n                 # Formato numérico
+netstat -rn              # Alternativa
+
+# Windows  
+route print              # Ver tabla de rutas
+netstat -r               # Alternativa
+<button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button>
+                    </div>
+                </div>
+
+                <div class="vm-card">
+                    <h4><i class="fas fa-search"></i> Resolución DNS</h4>
+                    <div class="code-block">
+# Linux
+nslookup google.com      # Consulta DNS básica
+dig google.com           # Información detallada DNS
+host google.com          # Resolución simple
+
+# Windows
+nslookup google.com      # Consulta DNS
+<button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button>
+                    </div>
+                </div>
+
+                <h3>Diagnóstico de Problemas Comunes</h3>
+
+                <div class="advanced-controls">
+                    <div class="control-panel">
+                        <h4>🚫 No hay conectividad entre VMs</h4>
+                        <div class="diagnostic-output">
+# 1. Verificar configuración de VirtualBox
+- Adaptador 2 conectado a "Red interna"
+- Nombre de red: "internet" (exacto en todas las VMs)
+- Adaptadores habilitados
+
+# 2. Verificar IPs asignadas
+ip addr show    # Linux
+ipconfig        # Windows
+
+# 3. Verificar rutas
+ip route show   # Linux
+route print     # Windows
+                        </div>
+                    </div>
+
+                    <div class="control-panel">
+                        <h4>⚠️ PING no funciona desde/hacia Windows</h4>
+                        <div class="diagnostic-output">
+# Verificar Firewall de Windows:
+1. Panel de Control → Firewall
+2. Configuración avanzada
+3. Reglas de entrada
+4. Buscar regla ICMP habilitada
+5. Si no existe, crear nueva regla:
+   - Tipo: Personalizada
+   - Protocolo: ICMPv4
+   - Acción: Permitir
+                        </div>
+                    </div>
+
+                    <div class="control-panel">
+                        <h4>🐌 Latencia alta o paquetes perdidos</h4>
+                        <div class="diagnostic-output">
+# Verificar recursos del sistema:
+1. CPU de la VM host no saturada
+2. RAM suficiente para todas las VMs
+3. Disco no fragmentado
+
+# Comandos de diagnóstico:
+ping -c 100 192.168.1.6  # Test extensivo
+traceroute 192.168.1.7   # Ruta de paquetes
+                        </div>
+                    </div>
+
+                    <div class="control-panel">
+                        <h4>🔧 Ubuntu Server sin conectividad</h4>
+                        <div class="diagnostic-output">
+# Verificar configuración Netplan:
+sudo netplan try          # Probar configuración
+sudo netplan apply        # Aplicar cambios
+sudo systemctl restart systemd-networkd
+
+# Verificar servicios:
+sudo systemctl status systemd-networkd
+sudo systemctl status NetworkManager
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Herramientas Avanzadas</h3>
+
+                <div class="vm-card">
+                    <h4><i class="fas fa-chart-bar"></i> Monitoreo de Tráfico</h4>
+                    <div class="code-block">
+# Linux - Monitoreo en tiempo real
+sudo tcpdump -i enp0s8                    # Capturar paquetes
+sudo tcpdump -i enp0s8 icmp              # Solo paquetes PING
+sudo netstat -i                          # Estadísticas de interfaces
+sudo ss -tuln                           # Conexiones activas
+
+# Herramientas adicionales (instalar si necesario)
+sudo apt install iftop                   # Monitor de ancho de banda
+sudo apt install nload                   # Monitor gráfico de red
+sudo apt install tcpdump                 # Captura de paquetes
+<button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button>
+                    </div>
+                </div>
+
+                <div class="vm-card">
+                    <h4><i class="fas fa-bug"></i> Scripts de Diagnóstico Automático</h4>
+                    <div class="code-block">
+#!/bin/bash
+# Script de diagnóstico de red VirtualBox
+
+echo "=== DIAGNÓSTICO DE RED VirtualBox ==="
+echo
+
+echo "1. Interfaces de red:"
+ip addr show | grep -E "(enp0s|eth)"
+
+echo -e "\n2. Rutas de red:"
+ip route show
+
+echo -e "\n3. Test de conectividad:"
+for ip in 192.168.1.6 192.168.1.7 192.168.1.8; do
+    echo -n "Ping a $ip: "
+    if ping -c 1 -W 2 $ip &> /dev/null; then
+        echo "✓ OK"
+    else
+        echo "✗ FALLO"
+    fi
+done
+
+echo -e "\n4. DNS Test:"
+nslookup google.com &> /dev/null && echo "✓ DNS OK" || echo "✗ DNS FALLO"
+
+echo -e "\nDiagnóstico completado."
+<button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button>
+                    </div>
+                </div>
+
+                <h3>🔧 Diagnósticos Específicos por Número de VMs</h3>
+
+                <div class="advanced-controls">
+                    <div class="control-panel">
+                        <h4>🏠 Diagnóstico para 3 VMs (Básico)</h4>
+                        <div class="diagnostic-output">
+# Verificar conectividad básica entre las 3 VMs
+ping -c 2 192.168.1.6   # Windows 7
+ping -c 2 192.168.1.7   # Ubuntu Desktop
+ping -c 2 192.168.1.8   # Ubuntu Server
+
+# Verificar servicios básicos
+systemctl status ssh    # Ubuntu Server
+systemctl status apache2 # Si está instalado
+
+# Test de transferencia de archivos
+scp test.txt user@192.168.1.8:/tmp/
+                        </div>
+                    </div>
+
+                    <div class="control-panel">
+                        <h4>💼 Diagnóstico para 4-5 VMs (Desarrollo)</h4>
+                        <div class="diagnostic-output">
+# Verificar Load Balancer
+curl -I http://192.168.1.10/health
+tail -f /var/log/haproxy/haproxy.log
+
+# Test de base de datos
+mysql -h 192.168.1.11 -u testuser -p -e "SHOW DATABASES;"
+
+# Verificar servicios web
+for i in {10..12}; do
+    curl -s http://192.168.1.$i | head -5
+done
+
+# Test de file server (Samba)
+smbclient -L //192.168.1.17 -U%
+                        </div>
+                    </div>
+
+                    <div class="control-panel">
+                        <h4>🌐 Diagnóstico para 6 VMs (Alta Disponibilidad)</h4>
+                        <div class="diagnostic-output">
+# Verificar replicación MySQL
+mysql -e "SHOW SLAVE STATUS\G" | grep -E "(Slave_IO_Running|Slave_SQL_Running)"
+
+# Test de failover del Load Balancer
+# Detener un servidor web y verificar que el LB redirija
+systemctl stop apache2  # En uno de los servidores
+curl -I http://192.168.1.10
+
+# Verificar monitoreo Nagios/Zabbix
+curl http://192.168.1.30/nagios/
+systemctl status nagios
+                        </div>
+                    </div>
+
+                    <div class="control-panel">
+                        <h4>🔒 Diagnóstico para 7 VMs (Seguridad)</h4>
+                        <div class="diagnostic-output">
+# Verificar herramientas de Kali Linux
+nmap --version
+metasploit --version
+burpsuite --version
+
+# Test de vulnerabilidades con OpenVAS
+gvm-cli socket --xml="&lt;get_tasks/&gt;"
+
+# Verificar ELK Stack
+curl http://192.168.1.10:9200/_cluster/health
+curl http://192.168.1.10:5601/status
+
+# Test de firewall pfSense
+ping -c 1 192.168.1.1
+curl http://192.168.1.1/status.php
+                        </div>
+                    </div>
+
+                    <div class="control-panel">
+                        <h4>🚀 Diagnóstico para 8 VMs (Producción)</h4>
+                        <div class="diagnostic-output">
+# Verificar toda la infraestructura
+#!/bin/bash
+echo "=== DIAGNÓSTICO PRODUCCIÓN ==="
+
+# Load Balancer
+echo "Load Balancer:" && curl -s -I http://192.168.1.10
+
+# Web Servers
+for i in {20..21}; do
+    echo "Web Server $i:" && curl -s -I http://192.168.1.$i
+done
+
+# Database cluster
+echo "DB Master:" && mysql -h 192.168.1.30 -e "SHOW MASTER STATUS;"
+echo "DB Slave:" && mysql -h 192.168.1.31 -e "SHOW SLAVE STATUS\G"
+
+# Monitoring
+echo "Prometheus:" && curl -s http://192.168.1.40:9090/api/v1/query?query=up
+
+# CI/CD
+echo "Jenkins:" && curl -s http://192.168.1.60:8080/api/json
+
+# Backups
+echo "Backup Status:" && systemctl status backup-service
+                        </div>
+                    </div>
+                </div>
+
+                <h3>🛠️ Herramientas de Diagnóstico Avanzado</h3>
+
+                <div class="vm-card">
+                    <h4><i class="fas fa-microscope"></i> Análisis de Rendimiento de Red</h4>
+                    <div class="code-block">
+# Medir ancho de banda entre VMs con iperf3
+# En el servidor (ej: Ubuntu Server):
+iperf3 -s
+
+# En el cliente (ej: Ubuntu Desktop):
+iperf3 -c 192.168.1.8 -t 30
+
+# Test de latencia avanzado
+mtr 192.168.1.6  # Continuous traceroute
+hping3 -c 10 -S -p 80 192.168.1.7  # TCP ping
+
+# Análisis de pérdida de paquetes
+ping -f -c 1000 192.168.1.8 | tail -5
+
+# Monitoreo de tráfico en tiempo real
+sudo iftop -i enp0s8
+sudo nethogs enp0s8
+<button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button>
+                    </div>
+                </div>
+
+                <div class="vm-card">
+                    <h4><i class="fas fa-shield-alt"></i> Diagnóstico de Seguridad</h4>
+                    <div class="code-block">
+# Escaneo de puertos con nmap
+nmap -sS 192.168.1.0/24  # Escaneo SYN de toda la subred
+nmap -sV -p- 192.168.1.8  # Escaneo completo de versiones
+
+# Verificar conexiones activas
+ss -tuln | grep LISTEN  # Puertos en escucha
+netstat -antup | grep ESTABLISHED  # Conexiones establecidas
+
+# Análisis de logs de seguridad
+tail -f /var/log/auth.log | grep ssh
+journalctl -u ssh -f
+
+# Test de firewall
+ufw status verbose
+iptables -L -n -v
+
+# Verificar certificados SSL (si aplica)
+openssl s_client -connect 192.168.1.10:443 -servername server.local
+<button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button>
+                    </div>
+                </div>
+
+                <div class="vm-card">
+                    <h4><i class="fas fa-database"></i> Diagnóstico de Bases de Datos</h4>
+                    <div class="code-block">
+# Verificar estado de MySQL/MariaDB
+systemctl status mysql
+mysql -e "SHOW ENGINE INNODB STATUS\G" | grep -A 10 "LATEST DETECTED DEADLOCK"
+
+# Verificar replicación
+mysql -e "SHOW SLAVE STATUS\G" | grep -E "(Master_Log_File|Relay_Master_Log_File|Seconds_Behind_Master)"
+
+# Analizar rendimiento de consultas
+mysql -e "SHOW PROCESSLIST;"
+mysql -e "SHOW STATUS LIKE 'Slow_queries';"
+
+# Verificar conexiones de red a la base de datos
+mysql -h 192.168.1.20 -u root -p -e "SHOW STATUS LIKE 'Threads_connected';"
+
+# Test de carga de base de datos
+sysbench oltp_read_write --mysql-host=192.168.1.20 --mysql-user=test prepare
+sysbench oltp_read_write --mysql-host=192.168.1.20 --mysql-user=test run
+<button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button>
+                    </div>
+                </div>
+
+                <div class="vm-card">
+                    <h4><i class="fas fa-cogs"></i> Scripts de Automatización de Diagnóstico</h4>
+                    <div class="code-block">
+#!/bin/bash
+# Script completo de diagnóstico para múltiples VMs
+# Nombre: vm_network_diagnostics.sh
+
+LOG_FILE="/tmp/vm_diagnostics_$(date +%Y%m%d_%H%M%S).log"
+
+log() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" | tee -a "$LOG_FILE"
+}
+
+test_connectivity() {
+    local ip=$1
+    local name=$2
+    log "Testing connectivity to $name ($ip)..."
+
+    if ping -c 3 -W 5 "$ip" &>/dev/null; then
+        log "✓ $name is reachable"
+
+        # Test SSH if port 22 is open
+        if nc -z "$ip" 22 2>/dev/null; then
+            log "✓ SSH service available on $name"
+        fi
+
+        # Test HTTP if port 80 is open
+        if nc -z "$ip" 80 2>/dev/null; then
+            log "✓ HTTP service available on $name"
+        fi
+    else
+        log "✗ $name is NOT reachable"
+    fi
+}
+
+# Array de VMs a testear (personalizar según tu configuración)
+declare -A VMS=(
+    ["192.168.1.6"]="Windows-7"
+    ["192.168.1.7"]="Ubuntu-Desktop"
+    ["192.168.1.8"]="Ubuntu-Server"
+    ["192.168.1.10"]="Load-Balancer"
+    ["192.168.1.20"]="Database-Master"
+)
+
+log "=== VM Network Diagnostics Started ==="
+log "Network interfaces:"
+ip addr show | grep -E "(enp0s|eth)" >> "$LOG_FILE"
+
+log "Routing table:"
+ip route show >> "$LOG_FILE"
+
+for ip in "${!VMS[@]}"; do
+    test_connectivity "$ip" "${VMS[$ip]}"
+done
+
+log "=== Diagnostics completed. Log saved to: $LOG_FILE ==="
+<button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección Videos Relacionados -->
+            <section id="videos" class="section">
+                <h2><i class="fas fa-video"></i> Videos Relacionados</h2>
+                <p>Videos recomendados sobre configuración de múltiples máquinas virtuales y redes avanzadas:</p>
+
+                <div class="video-grid">
+                    <div class="video-card">
+                        <img src="https://i.ytimg.com/vi/mOuKtZVMwbw/hq720.jpg" alt="Video thumbnail" class="video-thumbnail">
+                        <div class="video-info">
+                            <h3 class="video-title">VirtualBox #3 - Conectar 2 MÁQUINAS VIRTUALES en RED</h3>
+                            <div class="video-meta">
+                                <div><strong>Canal:</strong> Marc Venteo</div>
+                                <div><strong>Vistas:</strong> 97,151 • <strong>Duración:</strong> 12:37</div>
+                            </div>
+                            <p>Configuración completa de NAT, Red Interna y Adaptador Puente entre dos máquinas virtuales.</p>
+                            <a href="https://www.youtube.com/watch?v=mOuKtZVMwbw" target="_blank" class="video-link">
+                                <i class="fab fa-youtube"></i> Ver Video
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="video-card">
+                        <img src="https://i.ytimg.com/vi/Di89kPvoSpQ/hq720.jpg" alt="Video thumbnail" class="video-thumbnail">
+                        <div class="video-info">
+                            <h3 class="video-title">Máquinas Virtuales en RED - Configuración Completa</h3>
+                            <div class="video-meta">
+                                <div><strong>Canal:</strong> ProfeSantiago</div>
+                                <div><strong>Vistas:</strong> 25,612 • <strong>Duración:</strong> 12:37</div>
+                            </div>
+                            <p>Configuración de red interna, NAT y solo anfitrión. Incluye configuración de PING en firewall.</p>
+                            <a href="https://www.youtube.com/watch?v=Di89kPvoSpQ" target="_blank" class="video-link">
+                                <i class="fab fa-youtube"></i> Ver Video
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="video-card">
+                        <img src="https://i.ytimg.com/vi/H-TmVRaQSso/hq720.jpg" alt="Video thumbnail" class="video-thumbnail">
+                        <div class="video-info">
+                            <h3 class="video-title">3 Máquinas Virtuales - Windows Server en Red</h3>
+                            <div class="video-meta">
+                                <div><strong>Canal:</strong> EDUARDO PANTOJA</div>
+                                <div><strong>Vistas:</strong> 5,115 • <strong>Duración:</strong> 17:53</div>
+                            </div>
+                            <p>Tutorial avanzado para conectar 3 máquinas virtuales Windows Server en red interna empresarial.</p>
+                            <a href="https://www.youtube.com/watch?v=H-TmVRaQSso" target="_blank" class="video-link">
+                                <i class="fab fa-youtube"></i> Ver Video
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="video-card">
+                        <img src="https://i.ytimg.com/vi/SYgu0UeRJ9g/hq720.jpg" alt="Video thumbnail" class="video-thumbnail">
+                        <div class="video-info">
+                            <h3 class="video-title">Conexión de Dos Máquinas Windows - Tutorial Básico</h3>
+                            <div class="video-meta">
+                                <div><strong>Canal:</strong> José Antonio Guijarro</div>
+                                <div><strong>Vistas:</strong> 66,334 • <strong>Duración:</strong> 10:14</div>
+                            </div>
+                            <p>Explicación paso a paso para conectar dos máquinas virtuales Windows usando VirtualBox.</p>
+                            <a href="https://www.youtube.com/watch?v=SYgu0UeRJ9g" target="_blank" class="video-link">
+                                <i class="fab fa-youtube"></i> Ver Video
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="video-card">
+                        <img src="https://i.ytimg.com/vi/7RzRVjZJv88/hq720.jpg" alt="Video thumbnail" class="video-thumbnail">
+                        <div class="video-info">
+                            <h3 class="video-title">Conectar Múltiples Máquinas Virtuales en VirtualBox</h3>
+                            <div class="video-meta">
+                                <div><strong>Canal:</strong> Expertos de Computadoras</div>
+                                <div><strong>Vistas:</strong> 43,419 • <strong>Duración:</strong> 5:58</div>
+                            </div>
+                            <p>Tutorial para crear redes virtuales con múltiples propósitos usando VirtualBox.</p>
+                            <a href="https://www.youtube.com/watch?v=7RzRVjZJv88" target="_blank" class="video-link">
+                                <i class="fab fa-youtube"></i> Ver Video
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="video-card">
+                        <img src="https://i.ytimg.com/vi/hu9U30l0rq4/hq720.jpg" alt="Video thumbnail" class="video-thumbnail">
+                        <div class="video-info">
+                            <h3 class="video-title">Comunicar Máquinas VirtualBox con DHCP</h3>
+                            <div class="video-meta">
+                                <div><strong>Canal:</strong> Ariel Jesus Tanner</div>
+                                <div><strong>Vistas:</strong> 194 • <strong>Duración:</strong> 4:20</div>
+                            </div>
+                            <p>Configuración de servicio DHCP en VirtualBox para asignación automática de IPs.</p>
+                            <a href="https://www.youtube.com/watch?v=hu9U30l0rq4" target="_blank" class="video-link">
+                                <i class="fab fa-youtube"></i> Ver Video
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>📚 Videos por Categorías Especializadas</h3>
+
+                <div class="video-category">
+                    <h4><i class="fas fa-network-wired"></i> Configuración Básica de Redes</h4>
+                    <div class="video-grid">
+                        <div class="video-card">
+                            <img src="https://i.ytimg.com/vi/n2D1o-aM-2s/hq720.jpg" alt="Video thumbnail" class="video-thumbnail">
+                            <div class="video-info">
+                                <h3 class="video-title">Red Interna VirtualBox - Tutorial Completo</h3>
+                                <div class="video-meta">
+                                    <div><strong>Canal:</strong> TechWorld with Nana</div>
+                                    <div><strong>Vistas:</strong> 156,420 • <strong>Duración:</strong> 15:42</div>
+                                </div>
+                                <p>Configuración paso a paso de redes internas, NAT y adaptador puente en VirtualBox.</p>
+                                <a href="https://www.youtube.com/watch?v=n2D1o-aM-2s" target="_blank" class="video-link">
+                                    <i class="fab fa-youtube"></i> Ver Video
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="video-card">
+                            <img src="https://i.ytimg.com/vi/A0DKVLRMkN4/hq720.jpg" alt="Video thumbnail" class="video-thumbnail">
+                            <div class="video-info">
+                                <h3 class="video-title">VirtualBox Networking: Internal Networks</h3>
+                                <div class="video-meta">
+                                    <div><strong>Canal:</strong> NetworkChuck</div>
+                                    <div><strong>Vistas:</strong> 89,534 • <strong>Duración:</strong> 18:25</div>
+                                </div>
+                                <p>Conceptos fundamentales de networking en VirtualBox con ejemplos prácticos.</p>
+                                <a href="https://www.youtube.com/watch?v=A0DKVLRMkN4" target="_blank" class="video-link">
+                                    <i class="fab fa-youtube"></i> Ver Video
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="video-card">
+                            <img src="https://i.ytimg.com/vi/WMy3OzvBWc0/hq720.jpg" alt="Video thumbnail" class="video-thumbnail">
+                            <div class="video-info">
+                                <h3 class="video-title">Ubuntu Network Configuration with Netplan</h3>
+                                <div class="video-meta">
+                                    <div><strong>Canal:</strong> LearnLinuxTV</div>
+                                    <div><strong>Vistas:</strong> 234,567 • <strong>Duración:</strong> 22:15</div>
+                                </div>
+                                <p>Configuración avanzada de red en Ubuntu Server usando Netplan y comandos CLI.</p>
+                                <a href="https://www.youtube.com/watch?v=WMy3OzvBWc0" target="_blank" class="video-link">
+                                    <i class="fab fa-youtube"></i> Ver Video
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="video-category">
+                    <h4><i class="fas fa-server"></i> Infraestructura y Servicios</h4>
+                    <div class="video-grid">
+                        <div class="video-card">
+                            <img src="https://i.ytimg.com/vi/x3sQmLjKsYg/hq720.jpg" alt="Video thumbnail" class="video-thumbnail">
+                            <div class="video-info">
+                                <h3 class="video-title">Samba File Server - Complete Setup</h3>
+                                <div class="video-meta">
+                                    <div><strong>Canal:</strong> TechnoTim</div>
+                                    <div><strong>Vistas:</strong> 78,923 • <strong>Duración:</strong> 16:33</div>
+                                </div>
+                                <p>Instalación y configuración completa de servidor Samba para compartir archivos.</p>
+                                <a href="https://www.youtube.com/watch?v=x3sQmLjKsYg" target="_blank" class="video-link">
+                                    <i class="fab fa-youtube"></i> Ver Video
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="video-card">
+                            <img src="https://i.ytimg.com/vi/pTFZFxd4hOI/hq720.jpg" alt="Video thumbnail" class="video-thumbnail">
+                            <div class="video-info">
+                                <h3 class="video-title">Apache Web Server - From Zero to Production</h3>
+                                <div class="video-meta">
+                                    <div><strong>Canal:</strong> freeCodeCamp.org</div>
+                                    <div><strong>Vistas:</strong> 445,689 • <strong>Duración:</strong> 1:45:22</div>
+                                </div>
+                                <p>Configuración completa de Apache con SSL, virtual hosts y optimización.</p>
+                                <a href="https://www.youtube.com/watch?v=pTFZFxd4hOI" target="_blank" class="video-link">
+                                    <i class="fab fa-youtube"></i> Ver Video
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="video-card">
+                            <img src="https://i.ytimg.com/vi/9_3UhmPOdSs/hq720.jpg" alt="Video thumbnail" class="video-thumbnail">
+                            <div class="video-info">
+                                <h3 class="video-title">pfSense Firewall - Complete Configuration</h3>
+                                <div class="video-meta">
+                                    <div><strong>Canal:</strong> Lawrence Systems</div>
+                                    <div><strong>Vistas:</strong> 127,834 • <strong>Duración:</strong> 34:56</div>
+                                </div>
+                                <p>Configuración completa de pfSense como firewall y router empresarial.</p>
+                                <a href="https://www.youtube.com/watch?v=9_3UhmPOdSs" target="_blank" class="video-link">
+                                    <i class="fab fa-youtube"></i> Ver Video
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>🎯 Temas Avanzados Recomendados</h3>
+                <div class="vm-card">
+                    <h4>📈 Próximos Pasos de Aprendizaje</h4>
+                    <ul>
+                        <li><strong>Configuración DHCP:</strong> Automatizar asignación de IPs dinámicas</li>
+                        <li><strong>Servidor DNS Local:</strong> Resolución de nombres en red interna con BIND</li>
+                        <li><strong>Configuración Firewall:</strong> iptables, ufw y pfSense avanzado</li>
+                        <li><strong>Servicios de Red:</strong> SSH, FTP, HTTP, HTTPS entre máquinas</li>
+                        <li><strong>Monitoreo de Red:</strong> Zabbix, Prometheus, Nagios</li>
+                        <li><strong>VPN entre VMs:</strong> OpenVPN, WireGuard para comunicación segura</li>
+                    </ul>
+                </div>
+
+                <h3>📚 Videos por Categorías Especializadas</h3>
+
+                <div class="video-category">
+                    <h4><i class="fas fa-network-wired"></i> Configuración Básica de Redes</h4>
+                    <div class="video-grid">
+                        <div class="video-card">
+                            <img src="https://i.ytimg.com/vi/n2D1o-aM-2s/hq720.jpg" alt="Video thumbnail" class="video-thumbnail">
+                            <div class="video-info">
+                                <h3 class="video-title">Red Interna VirtualBox - Tutorial Completo</h3>
+                                <div class="video-meta">
+                                    <div><strong>Canal:</strong> TechWorld with Nana</div>
+                                    <div><strong>Vistas:</strong> 156,420 • <strong>Duración:</strong> 15:42</div>
+                                </div>
+                                <p>Configuración paso a paso de redes internas, NAT y adaptador puente en VirtualBox.</p>
+                                <a href="https://www.youtube.com/watch?v=n2D1o-aM-2s" target="_blank" class="video-link">
+                                    <i class="fab fa-youtube"></i> Ver Video
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="video-card">
+                            <img src="https://i.ytimg.com/vi/A0DKVLRMkN4/hq720.jpg" alt="Video thumbnail" class="video-thumbnail">
+                            <div class="video-info">
+                                <h3 class="video-title">VirtualBox Networking: Internal Networks</h3>
+                                <div class="video-meta">
+                                    <div><strong>Canal:</strong> NetworkChuck</div>
+                                    <div><strong>Vistas:</strong> 89,534 • <strong>Duración:</strong> 18:25</div>
+                                </div>
+                                <p>Conceptos fundamentales de networking en VirtualBox con ejemplos prácticos.</p>
+                                <a href="https://www.youtube.com/watch?v=A0DKVLRMkN4" target="_blank" class="video-link">
+                                    <i class="fab fa-youtube"></i> Ver Video
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="video-card">
+                            <img src="https://i.ytimg.com/vi/WMy3OzvBWc0/hq720.jpg" alt="Video thumbnail" class="video-thumbnail">
+                            <div class="video-info">
+                                <h3 class="video-title">Ubuntu Network Configuration with Netplan</h3>
+                                <div class="video-meta">
+                                    <div><strong>Canal:</strong> LearnLinuxTV</div>
+                                    <div><strong>Vistas:</strong> 234,567 • <strong>Duración:</strong> 22:15</div>
+                                </div>
+                                <p>Configuración avanzada de red en Ubuntu Server usando Netplan y comandos CLI.</p>
+                                <a href="https://www.youtube.com/watch?v=WMy3OzvBWc0" target="_blank" class="video-link">
+                                    <i class="fab fa-youtube"></i> Ver Video
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="video-category">
+                    <h4><i class="fas fa-server"></i> Infraestructura y Servicios</h4>
+                    <div class="video-grid">
+                        <div class="video-card">
+                            <img src="https://i.ytimg.com/vi/x3sQmLjKsYg/hq720.jpg" alt="Video thumbnail" class="video-thumbnail">
+                            <div class="video-info">
+                                <h3 class="video-title">Samba File Server - Complete Setup</h3>
+                                <div class="video-meta">
+                                    <div><strong>Canal:</strong> TechnoTim</div>
+                                    <div><strong>Vistas:</strong> 78,923 • <strong>Duración:</strong> 16:33</div>
+                                </div>
+                                <p>Instalación y configuración completa de servidor Samba para compartir archivos.</p>
+                                <a href="https://www.youtube.com/watch?v=x3sQmLjKsYg" target="_blank" class="video-link">
+                                    <i class="fab fa-youtube"></i> Ver Video
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="video-card">
+                            <img src="https://i.ytimg.com/vi/pTFZFxd4hOI/hq720.jpg" alt="Video thumbnail" class="video-thumbnail">
+                            <div class="video-info">
+                                <h3 class="video-title">Apache Web Server - From Zero to Production</h3>
+                                <div class="video-meta">
+                                    <div><strong>Canal:</strong> freeCodeCamp.org</div>
+                                    <div><strong>Vistas:</strong> 445,689 • <strong>Duración:</strong> 1:45:22</div>
+                                </div>
+                                <p>Configuración completa de Apache con SSL, virtual hosts y optimización.</p>
+                                <a href="https://www.youtube.com/watch?v=pTFZFxd4hOI" target="_blank" class="video-link">
+                                    <i class="fab fa-youtube"></i> Ver Video
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="video-card">
+                            <img src="https://i.ytimg.com/vi/9_3UhmPOdSs/hq720.jpg" alt="Video thumbnail" class="video-thumbnail">
+                            <div class="video-info">
+                                <h3 class="video-title">pfSense Firewall - Complete Configuration</h3>
+                                <div class="video-meta">
+                                    <div><strong>Canal:</strong> Lawrence Systems</div>
+                                    <div><strong>Vistas:</strong> 127,834 • <strong>Duración:</strong> 34:56</div>
+                                </div>
+                                <p>Configuración completa de pfSense como firewall y router empresarial.</p>
+                                <a href="https://www.youtube.com/watch?v=9_3UhmPOdSs" target="_blank" class="video-link">
+                                    <i class="fab fa-youtube"></i> Ver Video
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="video-category">
+                    <h4><i class="fas fa-balance-scale"></i> Load Balancing y Alta Disponibilidad</h4>
+                    <div class="video-grid">
+                        <div class="video-card">
+                            <img src="https://i.ytimg.com/vi/Q_s7rXGdnhc/hq720.jpg" alt="Video thumbnail" class="video-thumbnail">
+                            <div class="video-info">
+                                <h3 class="video-title">HAProxy Load Balancer - Production Setup</h3>
+                                <div class="video-meta">
+                                    <div><strong>Canal:</strong> Amigoscode</div>
+                                    <div><strong>Vistas:</strong> 198,756 • <strong>Duración:</strong> 28:45</div>
+                                </div>
+                                <p>Configuración profesional de HAProxy con health checks y failover automático.</p>
+                                <a href="https://www.youtube.com/watch?v=Q_s7rXGdnhc" target="_blank" class="video-link">
+                                    <i class="fab fa-youtube"></i> Ver Video
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="video-card">
+                            <img src="https://i.ytimg.com/vi/7VhMNhSj9Kg/hq720.jpg" alt="Video thumbnail" class="video-thumbnail">
+                            <div class="video-info">
+                                <h3 class="video-title">MySQL Master-Slave Replication</h3>
+                                <div class="video-meta">
+                                    <div><strong>Canal:</strong> Derek Banas</div>
+                                    <div><strong>Vistas:</strong> 89,432 • <strong>Duración:</strong> 25:18</div>
+                                </div>
+                                <p>Configuración paso a paso de replicación MySQL Master-Slave para alta disponibilidad.</p>
+                                <a href="https://www.youtube.com/watch?v=7VhMNhSj9Kg" target="_blank" class="video-link">
+                                    <i class="fab fa-youtube"></i> Ver Video
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="video-card">
+                            <img src="https://i.ytimg.com/vi/KZOhsdfmRXo/hq720.jpg" alt="Video thumbnail" class="video-thumbnail">
+                            <div class="video-info">
+                                <h3 class="video-title">Nginx Load Balancer & Reverse Proxy</h3>
+                                <div class="video-meta">
+                                    <div><strong>Canal:</strong> Hussein Nasser</div>
+                                    <div><strong>Vistas:</strong> 156,789 • <strong>Duración:</strong> 32:44</div>
+                                </div>
+                                <p>Configuración avanzada de Nginx como load balancer y reverse proxy.</p>
+                                <a href="https://www.youtube.com/watch?v=KZOhsdfmRXo" target="_blank" class="video-link">
+                                    <i class="fab fa-youtube"></i> Ver Video
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="video-category">
+                    <h4><i class="fas fa-chart-line"></i> Monitoreo y Observabilidad</h4>
+                    <div class="video-grid">
+                        <div class="video-card">
+                            <img src="https://i.ytimg.com/vi/9TJx7QTrTyo/hq720.jpg" alt="Video thumbnail" class="video-thumbnail">
+                            <div class="video-info">
+                                <h3 class="video-title">Prometheus + Grafana - Complete Monitoring</h3>
+                                <div class="video-meta">
+                                    <div><strong>Canal:</strong> TechWorld with Nana</div>
+                                    <div><strong>Vistas:</strong> 312,456 • <strong>Duración:</strong> 42:15</div>
+                                </div>
+                                <p>Stack completo de monitoreo con Prometheus, Grafana y Node Exporter.</p>
+                                <a href="https://www.youtube.com/watch?v=9TJx7QTrTyo" target="_blank" class="video-link">
+                                    <i class="fab fa-youtube"></i> Ver Video
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="video-card">
+                            <img src="https://i.ytimg.com/vi/KZOhsdfmRXo/hq720.jpg" alt="Video thumbnail" class="video-thumbnail">
+                            <div class="video-info">
+                                <h3 class="video-title">Nagios Network Monitoring Setup</h3>
+                                <div class="video-meta">
+                                    <div><strong>Canal:</strong> Edureka!</div>
+                                    <div><strong>Vistas:</strong> 95,432 • <strong>Duración:</strong> 35:28</div>
+                                </div>
+                                <p>Instalación y configuración de Nagios para monitoreo de infraestructura.</p>
+                                <a href="https://www.youtube.com/watch?v=KZOhsdfmRXo" target="_blank" class="video-link">
+                                    <i class="fab fa-youtube"></i> Ver Video
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="video-card">
+                            <img src="https://i.ytimg.com/vi/rBUKQHFcZRk/hq720.jpg" alt="Video thumbnail" class="video-thumbnail">
+                            <div class="video-info">
+                                <h3 class="video-title">ELK Stack - Elasticsearch, Logstash, Kibana</h3>
+                                <div class="video-meta">
+                                    <div><strong>Canal:</strong> SimpliLearn</div>
+                                    <div><strong>Vistas:</strong> 187,659 • <strong>Duración:</strong> 38:52</div>
+                                </div>
+                                <p>Implementación completa del stack ELK para análisis de logs y SIEM.</p>
+                                <a href="https://www.youtube.com/watch?v=rBUKQHFcZRk" target="_blank" class="video-link">
+                                    <i class="fab fa-youtube"></i> Ver Video
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="video-category">
+                    <h4><i class="fas fa-shield-alt"></i> Ciberseguridad y Pentesting</h4>
+                    <div class="video-grid">
+                        <div class="video-card">
+                            <img src="https://i.ytimg.com/vi/4I4IjCZsUHE/hq720.jpg" alt="Video thumbnail" class="video-thumbnail">
+                            <div class="video-info">
+                                <h3 class="video-title">Kali Linux - Complete Penetration Testing</h3>
+                                <div class="video-meta">
+                                    <div><strong>Canal:</strong> The Cyber Mentor</div>
+                                    <div><strong>Vistas:</strong> 567,234 • <strong>Duración:</strong> 2:15:43</div>
+                                </div>
+                                <p>Curso completo de pentesting con Kali Linux, herramientas y metodologías.</p>
+                                <a href="https://www.youtube.com/watch?v=4I4IjCZsUHE" target="_blank" class="video-link">
+                                    <i class="fab fa-youtube"></i> Ver Video
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="video-card">
+                            <img src="https://i.ytimg.com/vi/VhDWw6Q7pI8/hq720.jpg" alt="Video thumbnail" class="video-thumbnail">
+                            <div class="video-info">
+                                <h3 class="video-title">OpenVAS Vulnerability Scanner Tutorial</h3>
+                                <div class="video-meta">
+                                    <div><strong>Canal:</strong> HackerSploit</div>
+                                    <div><strong>Vistas:</strong> 123,789 • <strong>Duración:</strong> 27:36</div>
+                                </div>
+                                <p>Configuración y uso de OpenVAS para escaneo de vulnerabilidades.</p>
+                                <a href="https://www.youtube.com/watch?v=VhDWw6Q7pI8" target="_blank" class="video-link">
+                                    <i class="fab fa-youtube"></i> Ver Video
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="video-card">
+                            <img src="https://i.ytimg.com/vi/Xfzl_HagzSg/hq720.jpg" alt="Video thumbnail" class="video-thumbnail">
+                            <div class="video-info">
+                                <h3 class="video-title">Metasploitable 2 - Ethical Hacking Lab</h3>
+                                <div class="video-meta">
+                                    <div><strong>Canal:</strong> Null Byte</div>
+                                    <div><strong>Vistas:</strong> 298,456 • <strong>Duración:</strong> 45:21</div>
+                                </div>
+                                <p>Laboratorio completo de hacking ético usando Metasploitable como target.</p>
+                                <a href="https://www.youtube.com/watch?v=Xfzl_HagzSg" target="_blank" class="video-link">
+                                    <i class="fab fa-youtube"></i> Ver Video
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="video-category">
+                    <h4><i class="fas fa-rocket"></i> DevOps y CI/CD</h4>
+                    <div class="video-grid">
+                        <div class="video-card">
+                            <img src="https://i.ytimg.com/vi/R8_veQiYBjI/hq720.jpg" alt="Video thumbnail" class="video-thumbnail">
+                            <div class="video-info">
+                                <h3 class="video-title">Complete CI/CD Pipeline with Jenkins</h3>
+                                <div class="video-meta">
+                                    <div><strong>Canal:</strong> DevOps Journey</div>
+                                    <div><strong>Vistas:</strong> 234,567 • <strong>Duración:</strong> 1:32:45</div>
+                                </div>
+                                <p>Pipeline completo de CI/CD usando Jenkins, Docker y herramientas DevOps.</p>
+                                <a href="https://www.youtube.com/watch?v=R8_veQiYBjI" target="_blank" class="video-link">
+                                    <i class="fab fa-youtube"></i> Ver Video
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="video-card">
+                            <img src="https://i.ytimg.com/vi/eO7_4VJfrAg/hq720.jpg" alt="Video thumbnail" class="video-thumbnail">
+                            <div class="video-info">
+                                <h3 class="video-title">GitLab CI/CD - Complete Tutorial</h3>
+                                <div class="video-meta">
+                                    <div><strong>Canal:</strong> TechWorld with Nana</div>
+                                    <div><strong>Vistas:</strong> 189,432 • <strong>Duración:</strong> 48:15</div>
+                                </div>
+                                <p>Tutorial completo de GitLab CI/CD con deployment automático.</p>
+                                <a href="https://www.youtube.com/watch?v=eO7_4VJfrAg" target="_blank" class="video-link">
+                                    <i class="fab fa-youtube"></i> Ver Video
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="video-card">
+                            <img src="https://i.ytimg.com/vi/3c-iBn73dDE/hq720.jpg" alt="Video thumbnail" class="video-thumbnail">
+                            <div class="video-info">
+                                <h3 class="video-title">Docker & Kubernetes - Complete Course</h3>
+                                <div class="video-meta">
+                                    <div><strong>Canal:</strong> freeCodeCamp.org</div>
+                                    <div><strong>Vistas:</strong> 1,234,567 • <strong>Duración:</strong> 4:28:32</div>
+                                </div>
+                                <p>Curso completo de containerización con Docker y orquestación con Kubernetes.</p>
+                                <a href="https://www.youtube.com/watch?v=3c-iBn73dDE" target="_blank" class="video-link">
+                                    <i class="fab fa-youtube"></i> Ver Video
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>🎯 Temas Avanzados Recomendados</h3>
+                <div class="vm-card">
+                    <h4>📈 Próximos Pasos de Aprendizaje</h4>
+                    <ul>
+                        <li><strong>Configuración DHCP:</strong> Automatizar asignación de IPs dinámicas</li>
+                        <li><strong>Servidor DNS Local:</strong> Resolución de nombres en red interna con BIND</li>
+                        <li><strong>Configuración Firewall:</strong> iptables, ufw y pfSense avanzado</li>
+                        <li><strong>Servicios de Red:</strong> SSH, FTP, HTTP, HTTPS entre máquinas</li>
+                        <li><strong>Monitoreo de Red:</strong> Zabbix, Prometheus, Nagios</li>
+                        <li><strong>VPN entre VMs:</strong> OpenVPN, WireGuard para comunicación segura</li>
+                        <li><strong>Container Orchestration:</strong> Docker Swarm, Kubernetes</li>
+                        <li><strong>Infrastructure as Code:</strong> Ansible, Terraform, Vagrant</li>
+                        <li><strong>Service Mesh:</strong> Istio, Linkerd para microservicios</li>
+                        <li><strong>Backup y Recovery:</strong> Bacula, rsync, snapshots automatizados</li>
+                    </ul>
+                </div>
+
+                <div class="vm-card">
+                    <h4>📖 Recursos Educativos Adicionales</h4>
+                    <div class="resource-grid">
+                        <div class="resource-item">
+                            <h5><i class="fab fa-youtube"></i> Canales Recomendados</h5>
+                            <ul>
+                                <li><strong>NetworkChuck:</strong> Networking y certificaciones</li>
+                                <li><strong>TechWorld with Nana:</strong> DevOps y Cloud</li>
+                                <li><strong>The Cyber Mentor:</strong> Cybersecurity y Pentesting</li>
+                                <li><strong>LearnLinuxTV:</strong> Linux y administración de sistemas</li>
+                                <li><strong>Hussein Nasser:</strong> Backend engineering y databases</li>
+                            </ul>
+                        </div>
+
+                        <div class="resource-item">
+                            <h5><i class="fas fa-book"></i> Certificaciones IT</h5>
+                            <ul>
+                                <li><strong>CompTIA Network+:</strong> Fundamentos de redes</li>
+                                <li><strong>CCNA:</strong> Cisco networking</li>
+                                <li><strong>RHCSA:</strong> Red Hat Linux administration</li>
+                                <li><strong>AWS Solutions Architect:</strong> Cloud computing</li>
+                                <li><strong>CEH:</strong> Certified Ethical Hacker</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="vm-card">
+                    <h4>🔗 Enlaces Útiles</h4>
+                    <ul>
+                        <li><a href="https://www.virtualbox.org/manual/ch06.html" target="_blank">Documentación oficial VirtualBox - Redes</a></li>
+                        <li><a href="https://netplan.io/examples" target="_blank">Ejemplos de configuración Netplan</a></li>
+                        <li><a href="https://ubuntu.com/server/docs/network-configuration" target="_blank">Configuración de red Ubuntu Server</a></li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- JS Files -->
+    <script src="JS/main.js"></script>
+    <script src="JS/simulador-basico.js"></script>
+    <script src="JS/simulador-simple.js"></script>
+    <script src="JS/simulador-profesional.js"></script>
+    <script src="JS/simulador-avanzado.js"></script>
+    <script src="JS/simulador.js"></script>
+    <script src="JS/simulador-utils.js"></script>
+    <script src="JS/network-stats.js"></script>
+    <script src="JS/simulator-actions.js"></script>
+    <script src="JS/diagnostico.js"></script>
+</body>
+</html>

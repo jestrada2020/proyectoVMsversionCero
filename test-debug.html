@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Test</title>
+    <link rel="stylesheet" href="CSS/styles.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="sidebar">
+            <h1>Test Navigation</h1>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active" onclick="testShowSection('diagnostico', this)">
+                        <i class="fas fa-chart-line"></i> Diagnóstico
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="testShowSection('videos', this)">
+                        <i class="fas fa-video"></i> Videos
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <section id="diagnostico" class="section active">
+                <h2><i class="fas fa-chart-line"></i> Herramientas de Diagnóstico</h2>
+                <p>Esta es la sección de diagnóstico. Si ves esto, funciona correctamente.</p>
+
+                <div class="vm-card">
+                    <h4><i class="fas fa-paper-plane"></i> Test Content</h4>
+                    <p>Contenido de prueba para verificar que se muestra correctamente.</p>
+                </div>
+            </section>
+
+            <section id="videos" class="section">
+                <h2><i class="fas fa-video"></i> Videos Relacionados</h2>
+                <p>Esta es la sección de videos. Si ves esto, funciona correctamente.</p>
+
+                <div class="video-category">
+                    <h4><i class="fas fa-network-wired"></i> Test Category</h4>
+                    <p>Categoría de prueba para verificar estilos.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        function testShowSection(sectionId, clickedElement) {
+            console.log('testShowSection called with:', sectionId);
+            console.log('Clicked element:', clickedElement);
+
+            // Ocultar todas las secciones
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+                console.log('Removing active from:', section.id);
+            });
+
+            // Mostrar la sección seleccionada
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+                console.log('Adding active to:', sectionId);
+                console.log('Section is now visible:', window.getComputedStyle(targetSection).display);
+            } else {
+                console.error('Section not found:', sectionId);
+            }
+
+            // Actualizar navegación
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            if (clickedElement) {
+                clickedElement.classList.add('active');
+                console.log('Navigation updated for:', clickedElement.textContent.trim());
+            }
+        }
+
+        // Test al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Page loaded');
+            console.log('Sections found:', document.querySelectorAll('.section').length);
+            console.log('Nav links found:', document.querySelectorAll('.nav-link').length);
+
+            // Verificar que la sección activa se muestra
+            const activeSection = document.querySelector('.section.active');
+            if (activeSection) {
+                console.log('Active section found:', activeSection.id);
+                console.log('Active section display:', window.getComputedStyle(activeSection).display);
+            } else {
+                console.log('No active section found');
+            }
+        });
+    </script>
+</body>
+</html>

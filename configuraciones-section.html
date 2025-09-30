@@ -1,0 +1,297 @@
+<!-- Sección Configuraciones de Red -->
+<section id="configuraciones" class="section">
+    <h2><i class="fas fa-network-wired"></i> Configuraciones de Red para VMs</h2>
+
+    <!-- Tabs para diferentes configuraciones -->
+    <div class="config-tabs">
+        <button class="config-tab active" onclick="showConfigTab('3vms')">3 VMs</button>
+        <button class="config-tab" onclick="showConfigTab('4vms')">4 VMs</button>
+        <button class="config-tab" onclick="showConfigTab('5vms')">5 VMs</button>
+        <button class="config-tab" onclick="showConfigTab('6vms')">6 VMs</button>
+        <button class="config-tab" onclick="showConfigTab('7vms')">7 VMs</button>
+        <button class="config-tab" onclick="showConfigTab('8vms')">8 VMs</button>
+    </div>
+
+    <!-- Contenido para 3 VMs -->
+    <div id="config-3vms" class="config-content active">
+        <h3>🏠 Configuración Básica - 3 VMs</h3>
+        <div class="config-scenario">
+            <h4>📋 Escenario: Red Doméstica/Aprendizaje</h4>
+            <div class="vm-grid">
+                <div class="vm-card">
+                    <h5><i class="fab fa-windows"></i> Windows 7</h5>
+                    <p><strong>IP:</strong> 192.168.1.6</p>
+                    <p><strong>Función:</strong> Cliente Desktop</p>
+                    <p><strong>RAM:</strong> 2GB</p>
+                    <p><strong>CPU:</strong> 2 Cores</p>
+                </div>
+                <div class="vm-card">
+                    <h5><i class="fab fa-ubuntu"></i> Ubuntu Desktop</h5>
+                    <p><strong>IP:</strong> 192.168.1.7</p>
+                    <p><strong>Función:</strong> Desarrollo</p>
+                    <p><strong>RAM:</strong> 4GB</p>
+                    <p><strong>CPU:</strong> 2 Cores</p>
+                </div>
+                <div class="vm-card">
+                    <h5><i class="fas fa-server"></i> Ubuntu Server</h5>
+                    <p><strong>IP:</strong> 192.168.1.8</p>
+                    <p><strong>Función:</strong> Servidor Web</p>
+                    <p><strong>RAM:</strong> 2GB</p>
+                    <p><strong>CPU:</strong> 1 Core</p>
+                </div>
+            </div>
+
+            <div class="config-steps">
+                <h4>🔧 Pasos de Configuración</h4>
+                <ol>
+                    <li>Crear red interna en VirtualBox: <code>vbox-network</code></li>
+                    <li>Configurar adaptador de red como "Red Interna" en todas las VMs</li>
+                    <li>Asignar IPs estáticas según la tabla</li>
+                    <li>Configurar máscara de subred: <code>255.255.255.0</code></li>
+                    <li>Instalar servicios básicos en Ubuntu Server (Apache, SSH)</li>
+                </ol>
+            </div>
+
+            <div class="recommended-videos">
+                <h4>📺 Videos Recomendados</h4>
+                <div class="video-list">
+                    <div class="video-item">
+                        <i class="fab fa-youtube"></i>
+                        <a href="https://www.youtube.com/watch?v=A0DKVLRMkN4" target="_blank">
+                            VirtualBox: Configuración de Red Interna Básica
+                        </a>
+                    </div>
+                    <div class="video-item">
+                        <i class="fab fa-youtube"></i>
+                        <a href="https://www.youtube.com/watch?v=WMy3OzvBWc0" target="_blank">
+                            Ubuntu Server: Configuración de Red Estática
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="diagnostics">
+                <h4>🔍 Diagnósticos Comunes</h4>
+                <div class="diagnostic-item">
+                    <h5>❌ Las VMs no se comunican</h5>
+                    <p><strong>Solución:</strong> Verificar que todas estén en la misma red interna</p>
+                    <div class="code-block">ping 192.168.1.7  # Desde Windows hacia Ubuntu</div>
+                </div>
+                <div class="diagnostic-item">
+                    <h5>⚠️ Servidor web no responde</h5>
+                    <p><strong>Solución:</strong> Verificar firewall y servicio Apache</p>
+                    <div class="code-block">sudo systemctl status apache2
+sudo ufw status</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenido para 4 VMs -->
+    <div id="config-4vms" class="config-content">
+        <h3>💼 Configuración Desarrollo - 4 VMs</h3>
+        <div class="config-scenario">
+            <h4>📋 Escenario: Entorno de Desarrollo Web</h4>
+            <div class="vm-grid">
+                <div class="vm-card">
+                    <h5><i class="fas fa-globe"></i> Web Server</h5>
+                    <p><strong>IP:</strong> 192.168.1.10</p>
+                    <p><strong>Función:</strong> Apache/Nginx</p>
+                    <p><strong>RAM:</strong> 3GB</p>
+                    <p><strong>CPU:</strong> 2 Cores</p>
+                </div>
+                <div class="vm-card">
+                    <h5><i class="fas fa-database"></i> Database Server</h5>
+                    <p><strong>IP:</strong> 192.168.1.11</p>
+                    <p><strong>Función:</strong> MySQL/PostgreSQL</p>
+                    <p><strong>RAM:</strong> 4GB</p>
+                    <p><strong>CPU:</strong> 2 Cores</p>
+                </div>
+                <div class="vm-card">
+                    <h5><i class="fas fa-vial"></i> Testing Server</h5>
+                    <p><strong>IP:</strong> 192.168.1.12</p>
+                    <p><strong>Función:</strong> Pruebas automáticas</p>
+                    <p><strong>RAM:</strong> 2GB</p>
+                    <p><strong>CPU:</strong> 2 Cores</p>
+                </div>
+                <div class="vm-card">
+                    <h5><i class="fas fa-balance-scale"></i> Load Balancer</h5>
+                    <p><strong>IP:</strong> 192.168.1.13</p>
+                    <p><strong>Función:</strong> HAProxy/Nginx</p>
+                    <p><strong>RAM:</strong> 1GB</p>
+                    <p><strong>CPU:</strong> 1 Core</p>
+                </div>
+            </div>
+
+            <div class="config-steps">
+                <h4>🔧 Pasos de Configuración</h4>
+                <ol>
+                    <li>Crear red interna: <code>dev-network</code></li>
+                    <li>Configurar Web Server con Apache2 y PHP</li>
+                    <li>Instalar MySQL en Database Server</li>
+                    <li>Configurar Load Balancer con HAProxy</li>
+                    <li>Instalar herramientas de testing (Selenium, PHPUnit)</li>
+                    <li>Configurar comunicación entre servicios</li>
+                </ol>
+            </div>
+
+            <div class="recommended-videos">
+                <h4>📺 Videos Recomendados</h4>
+                <div class="video-list">
+                    <div class="video-item">
+                        <i class="fab fa-youtube"></i>
+                        <a href="https://www.youtube.com/watch?v=Q_s7rXGdnhc" target="_blank">
+                            HAProxy: Configuración de Load Balancer
+                        </a>
+                    </div>
+                    <div class="video-item">
+                        <i class="fab fa-youtube"></i>
+                        <a href="https://www.youtube.com/watch?v=pTFZFxd4hOI" target="_blank">
+                            Docker vs VMs: Entornos de Desarrollo
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="diagnostics">
+                <h4>🔍 Diagnósticos Comunes</h4>
+                <div class="diagnostic-item">
+                    <h5>❌ Load Balancer no distribuye carga</h5>
+                    <p><strong>Solución:</strong> Verificar configuración HAProxy</p>
+                    <div class="code-block">sudo haproxy -c -f /etc/haproxy/haproxy.cfg</div>
+                </div>
+                <div class="diagnostic-item">
+                    <h5>⚠️ Base de datos no conecta</h5>
+                    <p><strong>Solución:</strong> Verificar bind-address en MySQL</p>
+                    <div class="code-block">sudo netstat -tulpn | grep :3306</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenido para 8 VMs -->
+    <div id="config-8vms" class="config-content">
+        <h3>🚀 Configuración Producción - 8 VMs</h3>
+        <div class="config-scenario">
+            <h4>📋 Escenario: Infraestructura de Producción Completa</h4>
+            <div class="vm-grid">
+                <div class="vm-card">
+                    <h5><i class="fas fa-globe"></i> Web Server 1</h5>
+                    <p><strong>IP:</strong> 192.168.1.20</p>
+                    <p><strong>Función:</strong> Frontend principal</p>
+                    <p><strong>RAM:</strong> 4GB</p>
+                    <p><strong>CPU:</strong> 3 Cores</p>
+                </div>
+                <div class="vm-card">
+                    <h5><i class="fas fa-globe"></i> Web Server 2</h5>
+                    <p><strong>IP:</strong> 192.168.1.21</p>
+                    <p><strong>Función:</strong> Frontend backup</p>
+                    <p><strong>RAM:</strong> 4GB</p>
+                    <p><strong>CPU:</strong> 3 Cores</p>
+                </div>
+                <div class="vm-card">
+                    <h5><i class="fas fa-database"></i> DB Master</h5>
+                    <p><strong>IP:</strong> 192.168.1.30</p>
+                    <p><strong>Función:</strong> Base datos principal</p>
+                    <p><strong>RAM:</strong> 6GB</p>
+                    <p><strong>CPU:</strong> 3 Cores</p>
+                </div>
+                <div class="vm-card">
+                    <h5><i class="fas fa-database"></i> DB Slave</h5>
+                    <p><strong>IP:</strong> 192.168.1.31</p>
+                    <p><strong>Función:</strong> Réplica lectura</p>
+                    <p><strong>RAM:</strong> 4GB</p>
+                    <p><strong>CPU:</strong> 2 Cores</p>
+                </div>
+                <div class="vm-card">
+                    <h5><i class="fas fa-balance-scale"></i> Load Balancer</h5>
+                    <p><strong>IP:</strong> 192.168.1.10</p>
+                    <p><strong>Función:</strong> Nginx/HAProxy</p>
+                    <p><strong>RAM:</strong> 2GB</p>
+                    <p><strong>CPU:</strong> 2 Cores</p>
+                </div>
+                <div class="vm-card">
+                    <h5><i class="fas fa-chart-line"></i> Monitoring</h5>
+                    <p><strong>IP:</strong> 192.168.1.40</p>
+                    <p><strong>Función:</strong> Prometheus/Grafana</p>
+                    <p><strong>RAM:</strong> 3GB</p>
+                    <p><strong>CPU:</strong> 2 Cores</p>
+                </div>
+                <div class="vm-card">
+                    <h5><i class="fas fa-save"></i> Backup Server</h5>
+                    <p><strong>IP:</strong> 192.168.1.50</p>
+                    <p><strong>Función:</strong> Respaldos automáticos</p>
+                    <p><strong>RAM:</strong> 2GB</p>
+                    <p><strong>CPU:</strong> 1 Core</p>
+                </div>
+                <div class="vm-card">
+                    <h5><i class="fas fa-rocket"></i> CI/CD Server</h5>
+                    <p><strong>IP:</strong> 192.168.1.60</p>
+                    <p><strong>Función:</strong> Jenkins/GitLab</p>
+                    <p><strong>RAM:</strong> 4GB</p>
+                    <p><strong>CPU:</strong> 3 Cores</p>
+                </div>
+            </div>
+
+            <div class="config-steps">
+                <h4>🔧 Pasos de Configuración Avanzada</h4>
+                <ol>
+                    <li>Configurar red interna: <code>production-network</code></li>
+                    <li>Implementar Load Balancer con SSL/TLS</li>
+                    <li>Configurar replicación Master-Slave en MySQL</li>
+                    <li>Instalar stack de monitoreo (Prometheus + Grafana)</li>
+                    <li>Configurar pipeline CI/CD automatizado</li>
+                    <li>Implementar sistema de backups automáticos</li>
+                    <li>Configurar alertas y notificaciones</li>
+                    <li>Implementar logging centralizado</li>
+                </ol>
+            </div>
+
+            <div class="recommended-videos">
+                <h4>📺 Videos Recomendados</h4>
+                <div class="video-list">
+                    <div class="video-item">
+                        <i class="fab fa-youtube"></i>
+                        <a href="https://www.youtube.com/watch?v=R8_veQiYBjI" target="_blank">
+                            DevOps: Pipeline completo CI/CD
+                        </a>
+                    </div>
+                    <div class="video-item">
+                        <i class="fab fa-youtube"></i>
+                        <a href="https://www.youtube.com/watch?v=eO7_4VJfrAg" target="_blank">
+                            MySQL Master-Slave: Configuración de réplicas
+                        </a>
+                    </div>
+                    <div class="video-item">
+                        <i class="fab fa-youtube"></i>
+                        <a href="https://www.youtube.com/watch?v=9TJx7QTrTyo" target="_blank">
+                            Prometheus + Grafana: Monitoreo profesional
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="diagnostics">
+                <h4>🔍 Diagnósticos Avanzados</h4>
+                <div class="diagnostic-item">
+                    <h5>❌ Replicación MySQL fallando</h5>
+                    <p><strong>Solución:</strong> Verificar configuración de réplica</p>
+                    <div class="code-block">SHOW SLAVE STATUS\G;
+SHOW MASTER STATUS;</div>
+                </div>
+                <div class="diagnostic-item">
+                    <h5>⚠️ Load Balancer con alta latencia</h5>
+                    <p><strong>Solución:</strong> Verificar health checks y algoritmos</p>
+                    <div class="code-block">curl -I http://192.168.1.10/health
+tail -f /var/log/nginx/access.log</div>
+                </div>
+                <div class="diagnostic-item">
+                    <h5>🔍 Monitoreo sin métricas</h5>
+                    <p><strong>Solución:</strong> Verificar exporters de Prometheus</p>
+                    <div class="code-block">systemctl status node_exporter
+curl http://192.168.1.40:9090/targets</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
