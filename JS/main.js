@@ -146,18 +146,21 @@ function toggleSidebar() {
     const mainContent = document.querySelector('.main-content');
     const toggleBtn = document.querySelector('.sidebar-toggle-btn');
     const toggleIcon = toggleBtn.querySelector('i');
-    
+    const toggleText = toggleBtn.querySelector('.toggle-text');
+
     // Toggle classes
     sidebar.classList.toggle('hidden');
     mainContent.classList.toggle('sidebar-hidden');
-    
-    // Cambiar el ícono según el estado
+
+    // Cambiar el ícono y texto según el estado
     if (sidebar.classList.contains('hidden')) {
         toggleIcon.className = 'fas fa-chevron-right';
-        toggleBtn.title = 'Mostrar menú';
+        toggleBtn.title = 'Mostrar menú lateral';
+        if (toggleText) toggleText.textContent = 'Mostrar';
     } else {
         toggleIcon.className = 'fas fa-bars';
-        toggleBtn.title = 'Ocultar menú';
+        toggleBtn.title = 'Ocultar menú lateral';
+        if (toggleText) toggleText.textContent = 'Menú';
     }
 }
 
@@ -189,7 +192,7 @@ document.addEventListener('click', function(event) {
 });
 
 // Funciones para las pestañas de configuración
-function showConfigTab(tabId) {
+function showConfigTab(tabId, clickedElement) {
     // Ocultar todos los contenidos
     document.querySelectorAll('.config-content').forEach(content => {
         content.classList.remove('active');
@@ -207,7 +210,9 @@ function showConfigTab(tabId) {
     }
 
     // Activar la pestaña seleccionada
-    event.target.classList.add('active');
+    if (clickedElement) {
+        clickedElement.classList.add('active');
+    }
 }
 
 // Inicializar la aplicación

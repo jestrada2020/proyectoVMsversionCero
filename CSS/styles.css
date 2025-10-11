@@ -82,7 +82,8 @@ body {
 .main-content {
     flex: 1;
     margin-left: 280px;
-    padding: 2rem;
+    padding: 1rem 2rem;
+    padding-top: 4rem;
     transition: margin-left 0.3s ease;
     position: relative;
 }
@@ -354,30 +355,46 @@ body {
 .sidebar-toggle-btn {
     position: fixed;
     top: 20px;
-    left: 20px;
+    left: 300px;
     z-index: 1002;
     background: linear-gradient(135deg, #4f46e5, #7c3aed);
     color: white;
     border: none;
-    padding: 12px 15px;
-    border-radius: 8px;
+    padding: 14px 18px;
+    border-radius: 10px;
     cursor: pointer;
-    font-size: 16px;
-    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    font-size: 18px;
+    box-shadow: 0 4px 16px rgba(79, 70, 229, 0.4);
     transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .sidebar-toggle-btn:hover {
     background: linear-gradient(135deg, #3730a3, #6d28d9);
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4);
+    box-shadow: 0 6px 20px rgba(79, 70, 229, 0.5);
 }
 
-.sidebar-toggle-btn.sidebar-hidden {
+.sidebar-toggle-btn:active {
+    transform: translateY(0);
+}
+
+.main-content.sidebar-hidden .sidebar-toggle-btn {
     left: 20px;
 }
 
+.toggle-text {
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+}
+
 @media (max-width: 768px) {
+    .toggle-text {
+        display: none;
+    }
     .mobile-menu-btn {
         display: block;
     }
@@ -3840,4 +3857,91 @@ body {
         align-items: flex-start;
         gap: 0.5rem;
     }
+}
+
+/* Estilos específicos para la sección Configuración Agentes Efectivos */
+.agentes-efectivos-section {
+    padding: 0.5cm !important;
+}
+
+.agentes-efectivos-section h2 {
+    margin-top: 0;
+    margin-bottom: 0.3cm;
+}
+
+.agentes-efectivos-section > p {
+    margin-top: 0;
+    margin-bottom: 0.3cm;
+}
+
+.agentes-efectivos-section .agentes-grid {
+    margin: 0.3cm 0 !important;
+    gap: 0.3cm !important;
+}
+
+.agentes-efectivos-section .vm-detail-card {
+    padding: 0.4cm !important;
+}
+
+.agentes-efectivos-section .vm-detail-card h3 {
+    margin-top: 0;
+    margin-bottom: 0.3cm;
+    font-size: 1.1rem;
+}
+
+.agentes-efectivos-section .vm-detail-card p {
+    margin: 0.2cm 0;
+    line-height: 1.4;
+}
+
+.agentes-efectivos-section .vm-detail-card > div {
+    margin: 0.3cm 0 !important;
+}
+
+.agentes-efectivos-section .vm-card {
+    margin: 0.3cm 0 !important;
+    padding: 0.4cm !important;
+}
+
+.agentes-efectivos-section .vm-card h3,
+.agentes-efectivos-section .vm-card h4 {
+    margin-top: 0;
+    margin-bottom: 0.3cm;
+}
+
+.agentes-efectivos-section .video-grid {
+    margin-top: 0.3cm !important;
+    gap: 0.3cm !important;
+}
+
+.agentes-efectivos-section .video-card {
+    padding: 0.4cm !important;
+}
+
+.agentes-efectivos-section .video-info h4 {
+    margin-top: 0;
+    margin-bottom: 0.3cm;
+    font-size: 1rem;
+}
+
+.agentes-efectivos-section .video-info p {
+    margin: 0.2cm 0;
+}
+
+.agentes-efectivos-section .video-meta {
+    margin: 0.2cm 0 !important;
+}
+
+.agentes-efectivos-section .video-link {
+    margin-top: 0.3cm;
+}
+
+.agentes-efectivos-section ul {
+    margin-top: 0.3cm;
+    margin-bottom: 0.3cm;
+    line-height: 1.5;
+}
+
+.agentes-efectivos-section ul li {
+    margin-bottom: 0.2cm;
 }
