@@ -67,11 +67,6 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link" onclick="showSection('agentes-efectivos')">
-                        <i class="fas fa-qrcode"></i> Configuración Agentes Efectivos
-                    </a>
-                </li>
-                <li class="nav-item">
                     <a href="#" class="nav-link" onclick="showSectionSafe('diagnostico', this)">
                         <i class="fas fa-chart-line"></i> Diagnóstico
                     </a>
@@ -84,7 +79,7 @@
             </ul>
         </nav>
 
-        <main class="main-content">
+        <main id="mainContent" class="main-content">
             <!-- Botón para ocultar/mostrar sidebar -->
             <button class="sidebar-toggle-btn" onclick="toggleSidebar()" title="Ocultar/Mostrar menú lateral">
                 <i class="fas fa-bars"></i>
@@ -1811,6 +1806,9 @@ curl http://192.168.1.40:9090/targets</div>
                         <a href="PresentacionProyectoVMsV2.pdf" target="_blank" class="cta-btn secondary" style="text-decoration: none; display: inline-block;">
                             <i class="fas fa-file-pdf"></i> Documento PDF Completo
                         </a>
+                        <a href="https://jestrada2020.github.io/AplicacionCodigoAgentesEfectivosV1/" target="_blank" class="cta-btn secondary" style="text-decoration: none; display: inline-block;">
+                            <i class="fas fa-external-link-alt"></i> Abrir Agentes Efectivos
+                        </a>
                     </div>
                 </div>
             </section>
@@ -3110,113 +3108,6 @@ log "=== Diagnostics completed. Log saved to: $LOG_FILE ==="
                         <li><a href="https://www.virtualbox.org/manual/ch06.html" target="_blank">Documentación oficial VirtualBox - Redes</a></li>
                         <li><a href="https://netplan.io/examples" target="_blank">Ejemplos de configuración Netplan</a></li>
                         <li><a href="https://ubuntu.com/server/docs/network-configuration" target="_blank">Configuración de red Ubuntu Server</a></li>
-                    </ul>
-                </div>
-            </section>
-
-            <!-- Sección Configuración Agentes Efectivos -->
-            <section id="agentes-efectivos" class="section agentes-efectivos-section">
-                <h2><i class="fas fa-qrcode"></i> Configuración Agentes Efectivos</h2>
-                <p>Accede a la aplicación de código de agentes efectivos para complementar tu aprendizaje sobre sistemas multi-agente.</p>
-
-                <div class="vm-details-grid agentes-grid">
-                    <!-- Tarjeta del Código QR -->
-                    <div class="vm-detail-card" style="text-align: center;">
-                        <h3><i class="fas fa-qrcode"></i> Código QR</h3>
-                        <p>Escanea el código QR con tu dispositivo móvil para acceder rápidamente a la aplicación:</p>
-                        <div style="display: flex; justify-content: center; margin: 0.3cm 0;">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://jestrada2020.github.io/AplicacionCodigoAgentesEfectivosV1/"
-                                 alt="Código QR - Aplicación Agentes Efectivos"
-                                 style="border: 3px solid #333; border-radius: 6px; padding: 8px; background: white;">
-                        </div>
-                        <p style="font-size: 0.85em; color: #666; margin-top: 0.2cm;">
-                            <i class="fas fa-mobile-alt"></i> Escanea con la cámara de tu teléfono
-                        </p>
-                    </div>
-
-                    <!-- Tarjeta del Enlace Directo -->
-                    <div class="vm-detail-card">
-                        <h3><i class="fas fa-link"></i> Enlace Directo</h3>
-                        <p>Accede directamente a la aplicación desde tu navegador:</p>
-                        <div style="margin: 0.3cm 0;">
-                            <a href="https://jestrada2020.github.io/AplicacionCodigoAgentesEfectivosV1/"
-                               target="_blank"
-                               class="video-link"
-                               style="display: inline-block; padding: 10px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: transform 0.3s;">
-                                <i class="fas fa-external-link-alt"></i> Abrir Aplicación de Agentes Efectivos
-                            </a>
-                        </div>
-                        <p style="font-size: 0.85em; color: #555; margin-top: 0.3cm; line-height: 1.5;">
-                            <i class="fas fa-info-circle"></i> Esta aplicación te permitirá explorar conceptos avanzados de sistemas multi-agente y configuraciones efectivas para entornos virtualizados.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Sección de Créditos -->
-                <div class="vm-card" style="margin-top: 0.5cm; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);">
-                    <h3><i class="fas fa-award"></i> Créditos y Reconocimientos</h3>
-
-                    <div class="video-grid" style="margin-top: 0.3cm;">
-                        <!-- Crédito al Video Tutorial -->
-                        <div class="video-card">
-                            <div class="video-info">
-                                <h4 class="video-title"><i class="fab fa-youtube"></i> Video Tutorial Original</h4>
-                                <p style="margin: 0.3cm 0; line-height: 1.5;">
-                                    Este proyecto está basado en el excelente tutorial que explica la creación de agentes de IA efectivos y su implementación práctica.
-                                </p>
-                                <div class="video-meta" style="margin: 0.2cm 0;">
-                                    <div><strong>Título:</strong> Tutorial de Agentes de IA Efectivos</div>
-                                </div>
-                                <a href="https://www.youtube.com/watch?v=Q3Gb7Rjre3U"
-                                   target="_blank"
-                                   class="video-link">
-                                    <i class="fab fa-youtube"></i> Ver Video Tutorial
-                                </a>
-                            </div>
-                        </div>
-
-                        <!-- Crédito al Repositorio Original -->
-                        <div class="video-card">
-                            <div class="video-info">
-                                <h4 class="video-title"><i class="fab fa-github"></i> Repositorio Original</h4>
-                                <p style="margin: 0.3cm 0; line-height: 1.5;">
-                                    El código fuente y los recursos originales fueron creados y son mantenidos por Dave Ebbelaar en GitHub.
-                                </p>
-                                <div class="video-meta" style="margin: 0.2cm 0;">
-                                    <div><strong>Autor:</strong> Dave Ebbelaar (daveebbelaar)</div>
-                                    <div><strong>Proyecto:</strong> Single File AI Agent Tutorial</div>
-                                </div>
-                                <a href="https://github.com/daveebbelaar/single-file-ai-agent-tutorial/tree/master"
-                                   target="_blank"
-                                   class="video-link">
-                                    <i class="fab fa-github"></i> Ver Repositorio en GitHub
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Nota de Agradecimiento -->
-                    <div style="margin-top: 0.4cm; padding: 0.4cm; background: rgba(255, 255, 255, 0.7); border-radius: 8px; border-left: 4px solid #667eea;">
-                        <p style="margin: 0; line-height: 1.6; color: #333;">
-                            <i class="fas fa-heart" style="color: #e74c3c;"></i> <strong>Agradecimientos especiales</strong> a todos los creadores de contenido y desarrolladores que comparten su conocimiento de forma abierta, permitiendo que la comunidad aprenda y crezca. Este tipo de recursos educativos son fundamentales para el desarrollo de habilidades en tecnología e inteligencia artificial.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Información Adicional -->
-                <div class="vm-card" style="margin-top: 0.5cm;">
-                    <h3><i class="fas fa-lightbulb"></i> Sobre la Aplicación</h3>
-                    <p style="line-height: 1.6;">
-                        La aplicación de <strong>Configuración de Agentes Efectivos</strong> es una herramienta educativa que complementa los conceptos de virtualización y redes presentados en este tutorial. Combina técnicas de inteligencia artificial con arquitecturas de sistemas distribuidos para crear soluciones robustas y escalables.
-                    </p>
-
-                    <h4 style="margin-top: 0.4cm;"><i class="fas fa-check-circle"></i> Características principales:</h4>
-                    <ul style="margin-left: 2rem; line-height: 1.6;">
-                        <li>Interfaz interactiva para configurar agentes de IA</li>
-                        <li>Ejemplos prácticos de implementación</li>
-                        <li>Integración con conceptos de redes virtuales</li>
-                        <li>Recursos educativos complementarios</li>
-                        <li>Código fuente abierto para aprendizaje</li>
                     </ul>
                 </div>
             </section>

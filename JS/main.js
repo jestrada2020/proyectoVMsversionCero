@@ -101,6 +101,18 @@ function showSection(sectionId) {
         console.log('Navigation updated for:', event.target.textContent);
     }
 
+    // Ajustar padding del main-content para la sección de agentes efectivos
+    const mainContent = document.getElementById('mainContent');
+    if (mainContent) {
+        if (sectionId === 'agentes-efectivos') {
+            mainContent.style.paddingTop = '0';
+            mainContent.style.paddingBottom = '1rem';
+        } else {
+            mainContent.style.paddingTop = '4rem';
+            mainContent.style.paddingBottom = '1rem';
+        }
+    }
+
     // NO inicializar automáticamente el simulador, solo cuando se abra el modal
 }
 

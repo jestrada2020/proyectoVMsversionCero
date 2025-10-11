@@ -92,6 +92,13 @@ body {
     margin-left: 0;
 }
 
+.main-content.agentes-view {
+    padding: 0 !important;
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+    padding-bottom: 1rem !important;
+}
+
 .section {
     display: none;
     background: rgba(255, 255, 255, 0.95);
@@ -3861,87 +3868,89 @@ body {
 
 /* Estilos específicos para la sección Configuración Agentes Efectivos */
 .agentes-efectivos-section {
-    padding: 0.5cm !important;
+    padding: 1rem !important;
+    padding-top: 1rem !important;
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+    min-height: calc(100vh - 2rem) !important;
+    border-radius: 20px !important;
 }
 
 .agentes-efectivos-section h2 {
     margin-top: 0;
-    margin-bottom: 0.3cm;
+    margin-bottom: 0.5rem;
 }
 
 .agentes-efectivos-section > p {
     margin-top: 0;
-    margin-bottom: 0.3cm;
+    margin-bottom: 0.5rem;
 }
 
 .agentes-efectivos-section .agentes-grid {
-    margin: 0.3cm 0 !important;
-    gap: 0.3cm !important;
+    margin: 0.5rem 0 !important;
+    gap: 1rem !important;
 }
 
 .agentes-efectivos-section .vm-detail-card {
-    padding: 0.4cm !important;
+    padding: 1rem !important;
+    margin: 0 !important;
 }
 
 .agentes-efectivos-section .vm-detail-card h3 {
     margin-top: 0;
-    margin-bottom: 0.3cm;
-    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
 }
 
 .agentes-efectivos-section .vm-detail-card p {
-    margin: 0.2cm 0;
-    line-height: 1.4;
+    margin: 0.5rem 0;
 }
 
 .agentes-efectivos-section .vm-detail-card > div {
-    margin: 0.3cm 0 !important;
+    margin: 0.5rem 0 !important;
 }
 
 .agentes-efectivos-section .vm-card {
-    margin: 0.3cm 0 !important;
-    padding: 0.4cm !important;
+    margin: 1rem 0 !important;
+    padding: 1rem !important;
 }
 
 .agentes-efectivos-section .vm-card h3,
 .agentes-efectivos-section .vm-card h4 {
     margin-top: 0;
-    margin-bottom: 0.3cm;
+    margin-bottom: 0.5rem;
 }
 
 .agentes-efectivos-section .video-grid {
-    margin-top: 0.3cm !important;
-    gap: 0.3cm !important;
+    margin-top: 0.5rem !important;
+    gap: 1rem !important;
 }
 
 .agentes-efectivos-section .video-card {
-    padding: 0.4cm !important;
+    padding: 1rem !important;
 }
 
 .agentes-efectivos-section .video-info h4 {
     margin-top: 0;
-    margin-bottom: 0.3cm;
-    font-size: 1rem;
+    margin-bottom: 0.5rem;
 }
 
 .agentes-efectivos-section .video-info p {
-    margin: 0.2cm 0;
+    margin: 0.5rem 0;
 }
 
 .agentes-efectivos-section .video-meta {
-    margin: 0.2cm 0 !important;
+    margin: 0.5rem 0 !important;
 }
 
 .agentes-efectivos-section .video-link {
-    margin-top: 0.3cm;
+    margin-top: 0.5rem;
 }
 
 .agentes-efectivos-section ul {
-    margin-top: 0.3cm;
-    margin-bottom: 0.3cm;
-    line-height: 1.5;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .agentes-efectivos-section ul li {
-    margin-bottom: 0.2cm;
+    margin-bottom: 0.3rem;
 }
